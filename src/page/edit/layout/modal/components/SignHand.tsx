@@ -1,7 +1,7 @@
 /*
 * export default component name: SignHand
 * dev: seon5
-* description: ~~~~~~~~~~~~~
+* description: 서명 추가 버튼 클릭시 렌더링되는 서명을 위한 컴포넌트
 * */
 import React, { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
@@ -11,10 +11,10 @@ import { drawCanvas } from "../../../../../utils/drawCanvas";
 import { useHandContext } from "../../../../../context/HandContext";
 
 interface HandProps {
-  onBaseDataUrlChange: (baseDataUrl: string) => void;
+  onCloseModal: () => void;
 }
 
-const SignHand: React.FC<HandProps> = () => {
+const SignHand: React.FC<HandProps> = ({onCloseModal}) => {
   const webcamRef = useRef<Webcam>(null); // 웹캠과 캔버스 요소에 대한 ref 생성
   const canvasRef = useRef<HTMLCanvasElement>(null); // 서명을 위한 canvas
   const canvasRefTop = useRef<HTMLCanvasElement>(null); // 검지 랜드마크를 그리기 위한 canvas
@@ -35,6 +35,10 @@ const SignHand: React.FC<HandProps> = () => {
 
     handleBaseDataUrlChange(baseDataUrl); // 콜백 호출해 부모 컴포넌트 Work로 base64 문자열 전달
     
+    if(baseDataUrl !== ''){
+      onCloseModal();
+      console.log("close modal");
+    }
   };
 
 
@@ -51,7 +55,7 @@ const SignHand: React.FC<HandProps> = () => {
     // 손 인식 설정 옵션
     hands.setOptions({
       // selfieMode : true,
-      maxNumHands: 1,
+      maxNumHands: 2,
       modelComplexity: 1,
       minDetectionConfidence: 0.5,
       minTrackingConfidence: 0.5,
@@ -79,8 +83,8 @@ const SignHand: React.FC<HandProps> = () => {
             console.log(error);
           }
         },
-        width: 640,
-        height: 360,
+        width: 920,
+        height: 515,
       });
       camera.start();
     }
@@ -104,23 +108,23 @@ const SignHand: React.FC<HandProps> = () => {
       audio={false}
       // style={{ visibility: "hidden" }}
       mirrored = {true}
-      width={640}
-      height={360}
+      width={920}
+      height={515}
       ref={webcamRef}
       screenshotFormat="image/jpeg"
-      videoConstraints={{ width: 640, height: 360, facingMode: "user" }}
+      videoConstraints={{ width: 920, height: 515, facingMode: "user" }}
     />
     {/* 캔버스 */}
-    <div style={{ position: 'relative', width: '640px', height: '360 '}}>
+    <div style={{ position: 'relative', width: '920px', height: '515px'}}>
       <canvas style={{ position: "absolute", top: "0px", left:"0px" }}
         ref={canvasRef}
-        width={640}
-        height={360}
+        width={920}
+        height={515}
       />
       <canvas style={{ position: "absolute", top: "0px", left:"0px" }}
         ref={canvasRefTop}
-        width={640}
-        height={360}
+        width={920}
+        height={515}
       />
     </div>
   </div>

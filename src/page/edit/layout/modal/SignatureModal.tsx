@@ -48,16 +48,11 @@ const SignatureModal: React.FC<SignatureModalProps> = ({ id, title, content, wri
 
     return (
         <>
-            {/* <div>
-                <p>손으로 그리기!</p>
-                <SignHand onBaseDataUrlChange={handleBaseDataUrlChange}/>
-                <button className="btn" onClick={closeModal}>XXXXXXXXXX</button>
-            </div> */}
             <div>
                 {canvas === "view" &&  (
                     <div>
                         <p>손으로 그리기!</p>
-                        <SignHand onBaseDataUrlChange={handleBaseDataUrlChange} />
+                        <SignHand onCloseModal={closeModal} />
                         <button className="btn" onClick={closeModal}>XXXXXXXXXX</button>
                     </div>
                 )}
