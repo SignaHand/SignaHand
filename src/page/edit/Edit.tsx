@@ -53,7 +53,7 @@ const Edit: React.FC = () => {
     return (
         <>
             <div className="grid grid-cols-5 h-screen flex">
-                <div className="col-span-1">
+                <div className="col-span-1" style={{backgroundColor:"#3c3c3c"}}>
                     <SignatureDisplay/>
 
                     {/* <SignHand>로 추가한 서명 렌더링 */}
@@ -75,7 +75,7 @@ const Edit: React.FC = () => {
                     )}
 
                 </div>
-                <div className="col-span-3">
+                <div className="col-span-3" style={{backgroundColor:"#505050"}}>
                     <PdfDisplay file={file}/>
 
                     {/* 복제된 서명 렌더링 */}
@@ -102,7 +102,7 @@ const Edit: React.FC = () => {
                         />
                     ))}
                 </div>
-                <div className="col-span-1">
+                <div className="col-span-1" style={{backgroundColor:"#3c3c3c"}}>
                     <PreviewDisplay/>
                 </div>
                 {/* 서명 위치&크기 조절을 위한 <MoveHand> 렌더링 */}
