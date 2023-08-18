@@ -1,10 +1,10 @@
 /*
 * export default module name: drawCanvas
 * dev: seon5
-* description: ~~~~~~~~~~~~~~
+* description: 손 검출 결과를 처리하여 손 동작 모드를 판단하고, 서명이 완료되면 서명 이미지의 base64 문자열이 저장된 base를 SignHand로 리턴
 * */
-import { drawConnectors, drawLandmarks } from "@mediapipe/drawing_utils";
-import { HAND_CONNECTIONS, Results, NormalizedLandmark, NormalizedLandmarkList } from "@mediapipe/hands";
+import { drawLandmarks } from "@mediapipe/drawing_utils";
+import { Results, NormalizedLandmark, NormalizedLandmarkList } from "@mediapipe/hands";
 
 
 export const drawCanvas = (ctx: CanvasRenderingContext2D, results: Results, coordList: { x: number; y: number }[], ctxTop: CanvasRenderingContext2D) => {
@@ -22,6 +22,9 @@ export const drawCanvas = (ctx: CanvasRenderingContext2D, results: Results, coor
   let index_finger;
   let middle_finger;
   let ring_finger;
+
+  // 손 개수
+  let handNum;
 
   // base64 문자열 저장
   let base = "";
@@ -47,10 +50,11 @@ export const drawCanvas = (ctx: CanvasRenderingContext2D, results: Results, coor
 
   // 손의 랜드마크 그리기
   if (results.multiHandLandmarks) {
+    handNum = 0;
     for (const handLandmarks of results.multiHandLandmarks) {
       if (handLandmarks[8]) {
-        x = handLandmarks[8].x * 1280;
-        y = handLandmarks[8].y * 720;
+        x = handLandmarks[8].x * 920;
+        y = handLandmarks[8].y * 515;
         // 손 떨림 보정
         if (coordList.length >= 2) {
           x = coordList[coordList.length - 1].x + (x - coordList[coordList.length - 1].x)/4;
@@ -64,18 +68,14 @@ export const drawCanvas = (ctx: CanvasRenderingContext2D, results: Results, coor
         middle_finger = calculateDistance(handLandmarks[12], handLandmarks[0]) < calculateDistance(handLandmarks[9], handLandmarks[0]);
         ring_finger = calculateDistance(handLandmarks[16], handLandmarks[0]) < calculateDistance(handLandmarks[13], handLandmarks[0]);
         if (!index_finger && !middle_finger && !ring_finger){
-          mode = "erase";
+          mode = "move";
+          handNum++;
         }else if (!index_finger && middle_finger){
           mode = "done";
         }else if (!index_finger && !middle_finger){
           mode = "draw";
         }
       }
-      // 골격 그리기
-      // drawConnectors(ctx, landmarks, HAND_CONNECTIONS, {
-      //   color: "#FFFFFF",
-      //   lineWidth: 5,
-      // });
 
       console.log(mode);
 
@@ -87,33 +87,35 @@ export const drawCanvas = (ctx: CanvasRenderingContext2D, results: Results, coor
         radius: 2,
       });
 
-      // 캔버스 전체 지우기 모드
-      if (mode === "erase"){
-        ctx.fillStyle = '#FFF';
+      // 이동 모드
+      if (mode === "move"){
+        // ctx.globalAlpha = 0.0;
+        // ctx.fillStyle = '#FFF';
         ctx.fillRect(0, 0, width, height);
       }
       
       // 그리기 모드
       else if (mode === "draw"){
         if (coordList.length >= 2) {
+          ctx.globalAlpha = 1.0;
           ctx.beginPath();
           ctx.moveTo(coordList[coordList.length - 2].x, coordList[coordList.length - 2].y);
           ctx.lineTo(coordList[coordList.length - 1].x, coordList[coordList.length - 1].y);
           ctx.lineWidth = 3;
           ctx.strokeStyle = '#000000';
           ctx.stroke();
-          // console.log(coordList[coordList.length-1]);
         }
       }
       else if (mode ==="done"){
         console.log("done");
         const canvasValue = ctx.canvas
         base = canvasValue.toDataURL();
-        
-        // console.log(base);
       }
       // else 예외 처리 코드 추가
       
+    }
+    if (handNum == 2) { // 양 손 펼치면 캔버스 clear
+      ctx.clearRect(0, 0, width, height);
     }
   }
   ctx.restore();

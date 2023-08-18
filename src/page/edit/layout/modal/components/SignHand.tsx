@@ -1,7 +1,7 @@
 /*
 * export default component name: SignHand
 * dev: seon5
-* description: ~~~~~~~~~~~~~
+* description: 서명 추가 버튼 클릭시 렌더링되는 서명을 위한 컴포넌트
 * */
 import React, { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
@@ -11,10 +11,10 @@ import { drawCanvas } from "../../../../../utils/drawCanvas";
 import { useHandContext } from "../../../../../context/HandContext";
 
 interface HandProps {
-  onBaseDataUrlChange: (baseDataUrl: string) => void;
+  onCloseModal: () => void;
 }
 
-const SignHand: React.FC<HandProps> = () => {
+const SignHand: React.FC<HandProps> = ({onCloseModal}) => {
   const webcamRef = useRef<Webcam>(null); // 웹캠과 캔버스 요소에 대한 ref 생성
   const canvasRef = useRef<HTMLCanvasElement>(null); // 서명을 위한 canvas
   const canvasRefTop = useRef<HTMLCanvasElement>(null); // 검지 랜드마크를 그리기 위한 canvas
@@ -35,6 +35,10 @@ const SignHand: React.FC<HandProps> = () => {
 
     handleBaseDataUrlChange(baseDataUrl); // 콜백 호출해 부모 컴포넌트 Work로 base64 문자열 전달
     
+    if(baseDataUrl !== ''){
+      onCloseModal();
+      console.log("close modal");
+    }
   };
 
 
@@ -51,7 +55,7 @@ const SignHand: React.FC<HandProps> = () => {
     // 손 인식 설정 옵션
     hands.setOptions({
       // selfieMode : true,
-      maxNumHands: 1,
+      maxNumHands: 2,
       modelComplexity: 1,
       minDetectionConfidence: 0.5,
       minTrackingConfidence: 0.5,
@@ -79,8 +83,8 @@ const SignHand: React.FC<HandProps> = () => {
             console.log(error);
           }
         },
-        width: 1280,
-        height: 720,
+        width: 920,
+        height: 515,
       });
       camera.start();
     }
@@ -90,6 +94,7 @@ const SignHand: React.FC<HandProps> = () => {
     // Hand 컴포넌트 렌더링된 후 canvas 초기화
     const canvasCtx = canvasRef.current!.getContext("2d")!;
     canvasCtx.fillStyle = '#FFF';
+    canvasCtx.globalAlpha = 0.0; 
     canvasCtx.fillRect(0, 0, canvasCtx.canvas.width, canvasCtx.canvas.height);
 
     
@@ -97,34 +102,32 @@ const SignHand: React.FC<HandProps> = () => {
 
 
   return (
-      <>
-        <div>
-          {/* 비디오 캡쳐 */}
-          <Webcam
-              audio={false}
-              // style={{ visibility: "hidden" }}
-              mirrored={true}
-              width={1280}
-              height={720}
-              ref={webcamRef}
-              screenshotFormat="image/jpeg"
-              videoConstraints={{width: 1280, height: 720, facingMode: "user"}}
-          />
-          {/* 캔버스 */}
-          <div style={{position: 'relative', width: '1280px', height: '720 '}}>
-            <canvas style={{position: "absolute", top: "0px", left: "0px"}}
-                    ref={canvasRef}
-                    width={1280}
-                    height={720}
-            />
-            <canvas style={{position: "absolute", top: "0px", left: "0px"}}
-                    ref={canvasRefTop}
-                    width={1280}
-                    height={720}
-            />
-          </div>
-        </div>
-      </>
+    <div>
+    {/* 비디오 캡쳐 */}
+    <Webcam
+      audio={false}
+      // style={{ visibility: "hidden" }}
+      mirrored = {true}
+      width={920}
+      height={515}
+      ref={webcamRef}
+      screenshotFormat="image/jpeg"
+      videoConstraints={{ width: 920, height: 515, facingMode: "user" }}
+    />
+    {/* 캔버스 */}
+    <div style={{ position: 'relative', width: '920px', height: '515px'}}>
+      <canvas style={{ position: "absolute", top: "0px", left:"0px" }}
+        ref={canvasRef}
+        width={920}
+        height={515}
+      />
+      <canvas style={{ position: "absolute", top: "0px", left:"0px" }}
+        ref={canvasRefTop}
+        width={920}
+        height={515}
+      />
+    </div>
+  </div>
   );
 };
 
