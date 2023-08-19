@@ -1,8 +1,8 @@
 /*
-* export default component name: SignHand
-* dev: seon5
-* description: 서명 추가 버튼 클릭시 렌더링되는 서명을 위한 컴포넌트
-* */
+ * export default component name: SignHand
+ * dev: seon5
+ * description: 서명 추가 버튼 클릭시 렌더링되는 서명을 위한 컴포넌트
+ * */
 import React, { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
 import { Camera } from "@mediapipe/camera_utils";
@@ -12,16 +12,16 @@ import { useHandContext } from "../../../../../context/HandContext";
 
 interface HandProps {
   onCloseModal: () => void;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
 }
 
-const SignHand: React.FC<HandProps> = ({onCloseModal}) => {
+const SignHand: React.FC<HandProps> = ({ onCloseModal, canvasRef }) => {
   const webcamRef = useRef<Webcam>(null); // 웹캠과 캔버스 요소에 대한 ref 생성
-  const canvasRef = useRef<HTMLCanvasElement>(null); // 서명을 위한 canvas
+  // const canvasRef = useRef<HTMLCanvasElement>(null); // 서명을 위한 canvas
   const canvasRefTop = useRef<HTMLCanvasElement>(null); // 검지 랜드마크를 그리기 위한 canvas
-  const resultsRef = useRef<Results>();  // Results : 손 인식 결과
+  const resultsRef = useRef<Results>(); // Results : 손 인식 결과
   const [coordList] = useState<{ x: number; y: number }[]>([]); // 랜드마크 좌표 저장
   const { handleBaseDataUrlChange } = useHandContext();
-
 
   // 검출결과（프레임마다 호출됨）
   // Hands 클래스가 랜드마크 인식 작업의 결과를 반환할 때 ResultsListener가 호출됨
@@ -34,13 +34,12 @@ const SignHand: React.FC<HandProps> = ({onCloseModal}) => {
     const baseDataUrl = drawCanvas(canvasCtx, results, coordList, canvasCtxTop);
 
     handleBaseDataUrlChange(baseDataUrl); // 콜백 호출해 부모 컴포넌트 Work로 base64 문자열 전달
-    
-    if(baseDataUrl !== ''){
+
+    if (baseDataUrl !== "") {
       onCloseModal();
       console.log("close modal");
     }
   };
-
 
   // 초기 설정
   // Hands 클래스 초기화
@@ -60,11 +59,10 @@ const SignHand: React.FC<HandProps> = ({onCloseModal}) => {
       minDetectionConfidence: 0.5,
       minTrackingConfidence: 0.5,
     });
-    
 
     // ResultsListener 함수를 등록하는 역할
     // 손 인식 결과가 발생할 때마다 ResultsListener 함수를 호출하도록 설정한다.
-    hands.onResults(ResultsListener)
+    hands.onResults(ResultsListener);
 
     // Camera 클래스를 사용해 웹캠 스트림 다루는 camera 객체 생성
     // <video> 요소에 대한 참조
@@ -79,7 +77,7 @@ const SignHand: React.FC<HandProps> = ({onCloseModal}) => {
         onFrame: async () => {
           try {
             await hands.send({ image: webcamRef.current!.video! });
-          } catch(error) {
+          } catch (error) {
             console.log(error);
           }
         },
@@ -88,46 +86,43 @@ const SignHand: React.FC<HandProps> = ({onCloseModal}) => {
       });
       camera.start();
     }
-  
-    
 
     // Hand 컴포넌트 렌더링된 후 canvas 초기화
     const canvasCtx = canvasRef.current!.getContext("2d")!;
-    canvasCtx.fillStyle = '#FFF';
-    canvasCtx.globalAlpha = 0.0; 
+    canvasCtx.fillStyle = "#FFF";
+    canvasCtx.globalAlpha = 0.0;
     canvasCtx.fillRect(0, 0, canvasCtx.canvas.width, canvasCtx.canvas.height);
-
-    
-  },[ResultsListener]);
-
+  }, [ResultsListener]);
 
   return (
     <div>
-    {/* 비디오 캡쳐 */}
-    <Webcam
-      audio={false}
-      // style={{ visibility: "hidden" }}
-      mirrored = {true}
-      width={920}
-      height={515}
-      ref={webcamRef}
-      screenshotFormat="image/jpeg"
-      videoConstraints={{ width: 920, height: 515, facingMode: "user" }}
-    />
-    {/* 캔버스 */}
-    <div style={{ position: 'relative', width: '920px', height: '515px'}}>
-      <canvas style={{ position: "absolute", top: "0px", left:"0px" }}
-        ref={canvasRef}
+      {/* 캔버스 */}
+      <div style={{ position: "relative", width: "920px", height: "515px" }}>
+        <canvas
+          style={{ position: "absolute", top: "0px", left: "0px" }}
+          ref={canvasRef}
+          width={920}
+          height={515}
+        />
+        <canvas
+          style={{ position: "absolute", top: "0px", left: "0px" }}
+          ref={canvasRefTop}
+          width={920}
+          height={515}
+        />
+      </div>
+      {/* 비디오 캡쳐 */}
+      <Webcam
+        audio={false}
+        style={{ visibility: "hidden" }}
+        mirrored={true}
         width={920}
         height={515}
-      />
-      <canvas style={{ position: "absolute", top: "0px", left:"0px" }}
-        ref={canvasRefTop}
-        width={920}
-        height={515}
+        ref={webcamRef}
+        screenshotFormat="image/jpeg"
+        videoConstraints={{ width: 920, height: 515, facingMode: "user" }}
       />
     </div>
-  </div>
   );
 };
 
