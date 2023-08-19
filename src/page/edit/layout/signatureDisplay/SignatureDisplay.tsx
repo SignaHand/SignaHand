@@ -49,22 +49,23 @@ const SignatureDisplay: React.FC = () => {
                         <div className="w-[155px] h-[69px] left-[70px] top-0 absolute text-black text-[25px] font-normal">project.pdf</div>
                     </div>
                 </button>
-                <button className="w-[230px] h-[150px] left-[65px] top-[186px] absolute"> {/* 사인 추가 칸 */}
+                <button className="w-[230px] h-[150px] left-[65px] top-[186px] absolute" onClick={openModal}> {/* 사인 추가 칸 */}
+                    <dialog ref={signModal} className="modal">
+                        <SignatureModal
+                            // setModalOpen={setModalOpen}
+                            id={1} // 실제 데이터로 변경하기..
+                            title="모달 제목"
+                            content="모달 내용"
+                            writer="작성자"
+                            modal={signModal}
+                        />
+                    </dialog>
                     <div className="w-[230px] h-[150px] left-0 top-0 absolute bg-white shadow border border-stone-300" />
                     <img className="w-[105px] h-[73.10px] left-[62px] top-[38px] absolute" src="/assets/images/signplus.png"/>
                 </button>
 
                 <button className="btn" onClick={openModal}>+</button>
-                <dialog ref={signModal} className="modal">
-                    <SignatureModal
-                        // setModalOpen={setModalOpen}
-                        id={1} // 실제 데이터로 변경하기..
-                        title="모달 제목"
-                        content="모달 내용"
-                        writer="작성자"
-                        modal={signModal}
-                    />
-                </dialog>
+
             </div>
         </>
     );

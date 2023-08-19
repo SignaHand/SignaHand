@@ -56,26 +56,54 @@ const Edit: React.FC = () => {
                 <div className="col-span-1" style={{backgroundColor:"white"}}>
                     <SignatureDisplay/>
 
-                    {/* <SignHand>로 추가한 서명 렌더링 */}
+                {/* 
+                    <div className="w-[230px] h-[150px] left-[65px] top-[186px] absolute"> 
+                        <div className="w-[230px] h-[150px] left-0 top-0 absolute bg-white shadow border border-stone-300" />
+                        {baseDataUrlArr[0] != "" && (
+                            <img 
+                                className="w-[105px] h-[73.10px] left-[62px] top-[38px] absolute" 
+                                src={baseDataUrlArr[0]}
+                                ref = {imgRef}
+                                style={{width:signWidth, position: "absolute", left: '0', top:'50px'}}
+                                onClick={startResize1}
+                            />
+                        )}
+                    </div>
+                    <div className="w-[230px] h-[150px] left-[65px] top-[186px] absolute">
+                        <div className="w-[230px] h-[150px] left-0 top-0 absolute bg-white shadow border border-stone-300" />
+                        {baseDataUrlArr[1] != "" && (
+                            <img 
+                                className="w-[105px] h-[73.10px] left-[62px] top-[38px] absolute" 
+                                src={baseDataUrlArr[1]}
+                                ref = {imgRef2}
+                                style={{width:signWidth, position: "absolute", left: '0', top:'150px'}}
+                                onClick={startResize2}
+                            />
+                        )}
+                    </div>
+                */}
+                    {/* <SignHand>로 추가한 서명 렌더링  */}
                     {baseDataUrlArr[0] != "" && (
-                    <img 
-                        src={baseDataUrlArr[0]}
-                        ref = {imgRef}
-                        style={{width:signWidth, position: "absolute", left: '0', top:'50px'}}
-                        onClick={startResize1}
-                    />
+                        <img 
+                            src={baseDataUrlArr[0]}
+                            ref = {imgRef}
+                            style={{width:signWidth, position: "absolute", left: '0', top:'50px'}}
+                            onClick={startResize1}
+                        />
                     )}
                     {baseDataUrlArr[1] != "" && (
-                    <img 
-                        src={baseDataUrlArr[1]}
-                        ref = {imgRef2}
-                        style={{width:signWidth, position: "absolute", left: '0', top:'150px'}}
-                        onClick={startResize2}
-                    />
+                        <img 
+                            src={baseDataUrlArr[1]}
+                            ref = {imgRef2}
+                            style={{width:signWidth, position: "absolute", left: '0', top:'150px'}}
+                            onClick={startResize2}
+                        />
                     )}
 
+                    
+
                 </div>
-                <div className="col-span-3" style={{backgroundColor:"stone-300"}}>
+                <div className="col-span-3" style={{backgroundColor:"#CECECE"}}>
                     <PdfDisplay file={file}/>
 
                     {/* 복제된 서명 렌더링 */}
