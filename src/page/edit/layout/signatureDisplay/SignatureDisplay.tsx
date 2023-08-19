@@ -24,6 +24,37 @@ const SignatureDisplay: React.FC = () => {
     return (
         <>
             <div>
+                <div className="w-[60.03px] h-[0px] left-[265px] top-[72.02px] absolute origin-top-left -rotate-90 border border-black border-opacity-50"></div> {/*구분선*/}
+                <div className="w-[75px] h-[70px] left-[177px] top-[2px] absolute"> {/* 한장씩 보기 */}
+                    <div className="w-[75px] h-[70px] left-0 top-0 absolute bg-white rounded-[10px] shadow border border-zinc-400"></div>
+                    <div className="w-8 h-[42px] left-[21px] top-[14px] absolute bg-white border border-black"></div>
+                </div>
+                <div className="w-[75px] h-[70px] left-[276px] top-[2px] absolute"> {/* 겹겹이 보기 */}
+                    <div className="w-[75px] h-[70px] left-0 top-0 absolute bg-white rounded-[10px] shadow border border-zinc-400"></div>
+                    <div className="w-[39px] h-12 left-[18px] top-[11px] absolute">
+                        <div className="w-8 h-[42px] left-[7px] top-[6px] absolute bg-white border border-black"></div>
+                        <div className="w-8 h-[42px] left-[4px] top-[3px] absolute bg-white border border-black"></div>
+                        <div className="w-8 h-[42px] left-0 top-0 absolute bg-white border border-black"></div>
+                    </div>
+                </div>
+                <div className="w-[75px] h-[70px] left-[5px] top-[2px] absolute"> {/* 체크박스 어디갔지 */}
+                    <div className="w-[75px] h-[70px] left-0 top-0 absolute bg-white rounded-[10px] shadow border border-zinc-400"></div>
+                    <div className="w-[50px] h-[50px] left-[12px] top-[10px] absolute"></div>
+                </div>
+                <div className="w-[342px] h-[91px] left-[9px] top-[426px] absolute"> {/* project.pdf 칸 */}
+                    <div className="w-[342px] h-[91px] left-0 top-0 absolute bg-white rounded-[10px] shadow border border-zinc-400"></div>
+                    <div className="w-[54px] h-[57px] left-[275px] top-[17px] absolute"></div>
+                    <div className="w-[225px] h-[69px] left-[9px] top-[11px] absolute">
+                        <img className="w-[69.74px] h-[69px] left-0 top-0 absolute border" src="https://via.placeholder.com/70x69" />
+                        <div className="w-[155px] h-[69px] left-[70px] top-0 absolute text-black text-[25px] font-normal">project.pdf</div>
+                    </div>
+                </div>
+                <div className="w-[230px] h-[150px] left-[65px] top-[186px] absolute"> {/* 사인 추가 칸 */}
+                    <div className="w-[230px] h-[150px] left-0 top-0 absolute bg-white shadow border border-stone-300"></div>
+                    <div className="w-[105px] h-[73.10px] left-[62px] top-[38px] absolute">
+                    </div>
+                </div>
+
                 <button className="btn" onClick={openModal}>+</button>
                 <dialog ref={signModal} className="modal">
                     <SignatureModal
