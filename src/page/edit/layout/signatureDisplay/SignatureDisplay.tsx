@@ -43,17 +43,16 @@ const SignatureDisplay: React.FC = () => {
                 </div>
                 <div className="w-[342px] h-[91px] left-[9px] top-[426px] absolute"> {/* project.pdf 칸 */}
                     <div className="w-[342px] h-[91px] left-0 top-0 absolute bg-white rounded-[10px] shadow border border-zinc-400"></div>
-                    <div className="w-[54px] h-[57px] left-[275px] top-[17px] absolute"></div>
+                    <img className="w-[54px] h-[57px] left-[275px] top-[17px] absolute" src="/assets/images/down.png"/>
                     <div className="w-[225px] h-[69px] left-[9px] top-[11px] absolute">
-                        <img className="w-[69.74px] h-[69px] left-0 top-0 absolute border" src="https://via.placeholder.com/70x69" />
+                        <img className="w-[69.74px] h-[69px] left-0 top-0 absolute border" src="/assets/images/pdfimg2.png" />
                         <div className="w-[155px] h-[69px] left-[70px] top-0 absolute text-black text-[25px] font-normal">project.pdf</div>
                     </div>
                 </div>
-                <div className="w-[230px] h-[150px] left-[65px] top-[186px] absolute"> {/* 사인 추가 칸 */}
-                    <div className="w-[230px] h-[150px] left-0 top-0 absolute bg-white shadow border border-stone-300"></div>
-                    <div className="w-[105px] h-[73.10px] left-[62px] top-[38px] absolute">
-                    </div>
-                </div>
+                <button className="w-[230px] h-[150px] left-[65px] top-[186px] absolute"> {/* 사인 추가 칸 */}
+                    <div className="w-[230px] h-[150px] left-0 top-0 absolute bg-white shadow border border-stone-300" />
+                    <img className="w-[105px] h-[73.10px] left-[62px] top-[38px] absolute" src="/assets/images/signplus.png"/>
+                </button>
 
                 <button className="btn" onClick={openModal}>+</button>
                 <dialog ref={signModal} className="modal">
