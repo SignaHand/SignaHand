@@ -17,8 +17,8 @@ const PdfUploader: React.FC = () => {
 
     return (
         <div className="grid justify-center place-content-center h-full">
-            <label className="relative cursor-pointer bg-gray-500 text-white py-2 px-10 rounded-lg">
-                파일 담기
+            <label className="relative cursor-pointer bg-gray-500 text-white py-2 px-10 rounded-lg text-center w-64" style={{backgroundColor:"red"}}>
+                시작하기
                 <input
                     className="opacity-0 cursor-pointer absolute top-0 left-0 w-full h-full"
                     type="file"
