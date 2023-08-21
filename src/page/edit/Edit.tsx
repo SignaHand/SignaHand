@@ -63,6 +63,29 @@ const Edit: React.FC = () => {
     setMoveHand("non-view");
   };
 
+  function drawSignature(
+    imgRef: React.RefObject<HTMLImageElement>,
+    dx: number,
+    dy: number
+  ) {
+    // canvas 요소 가져오기
+    const canvas: HTMLCanvasElement = document.getElementById(
+      "pdfCanvas"
+    ) as HTMLCanvasElement;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // 싸인 이미지를 생성하고 로드
+    const signature = new Image();
+    signature.src = imgRef.current?.src as string;
+    if (signature) {
+      signature.onload = function () {
+        ctx.drawImage(signature, dx, dy, 150, 84);
+      };
+    }
+  }
+
   return (
     <>
       <div className="grid grid-cols-5 h-screen flex">
@@ -80,7 +103,8 @@ const Edit: React.FC = () => {
                 left: "0",
                 top: "50px",
               }}
-              onClick={startResize1}
+              // onClick={startResize1}
+              onClick={() => drawSignature(imgRef, 420, 255)}
             />
           )}
           {baseDataUrlArr[1] != "" && (
@@ -93,7 +117,8 @@ const Edit: React.FC = () => {
                 left: "0",
                 top: "150px",
               }}
-              onClick={startResize2}
+              // onClick={startResize2}
+              onClick={() => drawSignature(imgRef2, 420, 270)}
             />
           )}
         </div>
