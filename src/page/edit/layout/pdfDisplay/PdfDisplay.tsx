@@ -6,7 +6,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as pdfjsLib from "pdfjs-dist";
 import Loading from "../loading/Loading";
-import {PageViewport, PDFPageProxy} from "pdfjs-dist";
+import {useResizeContext} from "../../../../context/HandContext";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`;
 
@@ -19,12 +19,21 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({file}) => {
     const [loading, setLoading] = useState(true);
     const [numPages, setNumPages] = useState<number>(100);
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const {
+        imgRef,
+        imgRef2,
+        signWidth,
+        copiedSigns1,
+        setCopiedSigns1,
+        copiedSigns2,
+        setCopiedSigns2,
+        setSelectedSign,
+    } = useResizeContext(); // 서명 이동&크기 조절을 위한 Context
 
     /* PDF 파일을 뷰어에 띄우기 위해서는 URL을 사용해야함 */
     const pdfUrl = URL.createObjectURL(file);
     /* PDF 문서 업로딩 */
     const loadingTask = pdfjsLib.getDocument(pdfUrl);
-    const temp = "container";
 
     useEffect(() => {
         /* PDF 불러오기 */
@@ -40,6 +49,7 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({file}) => {
 
                 // const canvas = canvasRef.current;
                 const canvas = document.createElement("canvas");
+                canvas.id = "pdfCanvas";
                 canvas.width = viewport.width;
                 canvas.height = viewport.height;
 
@@ -73,7 +83,7 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({file}) => {
 
 
     /* 다음 페이지 보는 함수*/
-    async function onHandleNextPage() {
+    function onHandleNextPage() {
         setCurrentPage(currentPage + 1);
         /*
         * preview 와 추가적으로 기능 작업 필요 -> canvas 이미지화하여 주고 받기 등....
@@ -81,13 +91,53 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({file}) => {
     }
 
     /* 이전 페이지 보는 함수*/
-    async function onHandlePrevPage() {
+    function onHandlePrevPage() {
         setCurrentPage(currentPage - 1);
         /*
         * preview 와 추가적으로 기능 작업 필요 -> canvas 이미지화하여 주고 받기 등....
         * */
     }
 
+
+    function drawSignature() {
+        // canvas 요소 가져오기
+        const canvas: HTMLCanvasElement = document.getElementById("pdfCanvas") as HTMLCanvasElement;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        // 이미지를 생성하고 로드
+        const img = new Image();
+        img.src = process.env.PUBLIC_URL + '/assets/images/pdfimg.png';
+
+        if(!ctx) return;
+        // 이미지가 로드되면 그리기
+        img.onload = function() {
+            ctx.drawImage(img, 0, 0); // 이미지를 (0, 0) 위치에 그립니다.
+        };
+    }
+
+    function saveImage() {
+        // canvas 가져오기
+        const canvas: HTMLCanvasElement = document.getElementById("pdfCanvas") as HTMLCanvasElement;
+
+        if (!canvas) return;
+        const imageDataUrl = canvas.toDataURL('image/png');
+        const image = new Image();
+        image.src = imageDataUrl;
+
+        // 이미지 띄우기
+        const imageContainer = document.getElementById('image-container');
+        if (imageContainer) {
+            imageContainer.appendChild(image);
+        }
+
+        // 이미지 데이터 URL을 저장하거나 다른 용도로 사용할 수 있음
+        // 예시: 이미지를 다운로드
+        const downloadLink = document.createElement('a');
+        downloadLink.href = imageDataUrl;
+        downloadLink.download = 'canvas_image.png';
+        downloadLink.click();
+    }
 
     return (
         <>
@@ -101,8 +151,9 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({file}) => {
             {currentPage !== numPages && (
                 <button className="btn" onClick={onHandleNextPage}>next</button>
             )}
-        </>
-    );
+            <button className="btn" onClick={drawSignature}>signature</button>
+            <button className="btn" onClick={saveImage}>saveImage</button>
+        </>);
 };
 
 export default PdfDisplay;
