@@ -11,18 +11,21 @@ interface LoadingProps {
 
 const Loading: React.FC<LoadingProps> = ({fileName}: LoadingProps) => {
     return (
-        <div className="w-full h-full flex items-center justify-center">
-            <div className="grid text-center">
-                <div className="flex">
-                    <img src="/assets/images/pdfimg.png" alt="pdfimg" className="w-14 h-14"/>
-                    {fileName}
-                </div>
-                <div>
-                    <span className="loading loading-spinner loading-lg"></span>
-                    <p>Loading...</p>
+        <div className="fixed top-0 left-0 w-screen h-screen bg-white opacity-100">
+            <div className="w-full h-full flex items-center justify-center">
+                <div className="grid text-center">
+                    <div className="flex">
+                        <img src="/assets/images/pdfimg.png" alt="pdfimg" className="w-14 h-14"/>
+                        {fileName}
+                    </div>
+                    <div>
+                        <span className="loading loading-spinner loading-lg"></span>
+                        <p>Loading...</p>
+                    </div>
                 </div>
             </div>
         </div>
+
     );
 };
 
