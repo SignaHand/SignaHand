@@ -69,41 +69,48 @@ const Edit: React.FC = () => {
     <>
       <div className="h-screen flex"> 
         <div className="w-[361px] h-[1080px]" style={{ backgroundColor: "#dcdcdc" }}>
-          
-
+          {/* 이미지와 관련된 내용을 감싸는 div */}
+          <div>
               {/* <SignHand>로 추가한 서명 렌더링 */}
               {baseDataUrlArr[0] != "" && (
-                <div>
+                <div style={{ position: "relative" }}>
                   <img
                     src={baseDataUrlArr[0]}
                     ref={imgRef}
-                    style={{
-                      width: signWidth,
-                      position: "absolute",
-                      left: "0",
-                      top: "50px",
-                    }}
+                    style={{width: signWidth, position: "absolute", left: "0", top: "50px",}}
                     onClick={startResize1}
                   />
+
                   {/* 이미지가 생성된 후 나타낼 div */}
                   {copiedSigns1.length > 0 && (
-                  <div
-                    className="w-[230px] h-[150px] left-[65px] top-[186px] absolute"
-                    style={{
-                      position: "absolute",
-                      left: "0",
-                      top: "50px",  // div의 위치를 조절
-                      display: moveHand === "view" ? "block" : "none", // moveHand 상태에 따라 표시 여부 조절
-                    }}
-                  />
+                    <div
+                      className="w-[233px] h-[150px] bg-red shadow border border-red-600 border-opacity-20"
+                      style={{
+                        position: "absolute",
+                        left: "0",
+                        top: "50px",
+                        display: moveHand === "view" ? "block" : "none",
+                      }}
+                    >
+                      {/* 사인 이미지 표시 */}
+                        <img
+                          src={baseDataUrlArr[0]}
+                          ref={imgRef}
+                          style={{
+                            width: signWidth,
+                            position: "absolute",
+                            left: "0",
+                            top: "0",
+                          }}
+                        />
+                    </div>
                   )}
                 </div>
               )}
-          
+            </div>
           <SignatureDisplay />
 
           {baseDataUrlArr[1] != "" && (
-            // <div className="w-[233px] h-[150px] bg-white shadow border border-red-600 border-opacity-20">
               <img
                 src={baseDataUrlArr[1]}
                 ref={imgRef2}
@@ -115,9 +122,10 @@ const Edit: React.FC = () => {
                 }}
                 onClick={startResize2}
               />
-            // </div>
-          )}
+            )}
+          
         </div>
+
         <div className="w-[1198px] h-[1080px] relative" style={{ backgroundColor: "red" }}>
           <PdfDisplay file={file} />
 
@@ -155,9 +163,11 @@ const Edit: React.FC = () => {
             />
           ))}
         </div>
+
         <div className="w-[361px] h-[1080px]" style={{ backgroundColor: "#dcdcdc" }}>
           <PreviewDisplay />
         </div>
+        
         {/* 서명 위치&크기 조절을 위한 <MoveHand> 렌더링 */}
         <div>
           {moveHand == "view" && (

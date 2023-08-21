@@ -23,6 +23,8 @@ const SignatureDisplay: React.FC = () => {
     }
   };
 
+  
+
   return (
     <>
             <div>
