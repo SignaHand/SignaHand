@@ -104,16 +104,16 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({file}) => {
         const canvas: HTMLCanvasElement = document.getElementById("pdfCanvas") as HTMLCanvasElement;
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
-
-        // 이미지를 생성하고 로드
-        const img = new Image();
-        img.src = process.env.PUBLIC_URL + '/assets/images/pdfimg.png';
-
         if(!ctx) return;
-        // 이미지가 로드되면 그리기
-        img.onload = function() {
-            ctx.drawImage(img, 0, 0); // 이미지를 (0, 0) 위치에 그립니다.
-        };
+
+        // 싸인 이미지를 생성하고 로드
+        const signature = new Image();
+        signature.src = imgRef.current?.src as string;
+        if (signature) {
+            signature.onload = function () {
+                ctx.drawImage(signature, 0, 0);
+            }
+        }
     }
 
     function saveImage() {
