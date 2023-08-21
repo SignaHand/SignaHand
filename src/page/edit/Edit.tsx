@@ -63,41 +63,62 @@ const Edit: React.FC = () => {
     setMoveHand("non-view");
   };
 
+
+//"grid grid-cols-5 h-screen flex"
   return (
     <>
-      <div className="grid grid-cols-5 h-screen flex">
-        <div className="col-span-1" style={{ backgroundColor: "white" }}>
+      <div className="h-screen flex"> 
+        <div className="w-[361px] h-[1080px]" style={{ backgroundColor: "#dcdcdc" }}>
+          
+
+              {/* <SignHand>로 추가한 서명 렌더링 */}
+              {baseDataUrlArr[0] != "" && (
+                <div>
+                  <img
+                    src={baseDataUrlArr[0]}
+                    ref={imgRef}
+                    style={{
+                      width: signWidth,
+                      position: "absolute",
+                      left: "0",
+                      top: "50px",
+                    }}
+                    onClick={startResize1}
+                  />
+                  {/* 이미지가 생성된 후 나타낼 div */}
+                  {copiedSigns1.length > 0 && (
+                  <div
+                    className="w-[230px] h-[150px] left-[65px] top-[186px] absolute"
+                    style={{
+                      position: "absolute",
+                      left: "0",
+                      top: "50px",  // div의 위치를 조절
+                      display: moveHand === "view" ? "block" : "none", // moveHand 상태에 따라 표시 여부 조절
+                    }}
+                  />
+                  )}
+                </div>
+              )}
+          
           <SignatureDisplay />
 
-          {/* <SignHand>로 추가한 서명 렌더링 */}
-          {baseDataUrlArr[0] != "" && (
-            <img
-              src={baseDataUrlArr[0]}
-              ref={imgRef}
-              style={{
-                width: signWidth,
-                position: "absolute",
-                left: "0",
-                top: "50px",
-              }}
-              onClick={startResize1}
-            />
-          )}
           {baseDataUrlArr[1] != "" && (
-            <img
-              src={baseDataUrlArr[1]}
-              ref={imgRef2}
-              style={{
-                width: signWidth,
-                position: "absolute",
-                left: "0",
-                top: "150px",
-              }}
-              onClick={startResize2}
-            />
+            // <div className="w-[233px] h-[150px] bg-white shadow border border-red-600 border-opacity-20">
+              <img
+                src={baseDataUrlArr[1]}
+                ref={imgRef2}
+                style={{
+                  width: signWidth,
+                  position: "absolute",
+                  left: "0",
+                  top: "150px",
+                }}
+                onClick={startResize2}
+              />
+            // </div>
           )}
         </div>
-        <div className="col-span-3" style={{ backgroundColor: "#CECECE" }}>
+        <div className="w-[1198px] h-[1080px] relative" style={{ backgroundColor: "red" }}>
           <PdfDisplay file={file} />
 
           {/* 복제된 서명 렌더링 */}
@@ -134,7 +155,7 @@ const Edit: React.FC = () => {
             />
           ))}
         </div>
-        <div className="col-span-1" style={{ backgroundColor: "white" }}>
+        <div className="w-[361px] h-[1080px]" style={{ backgroundColor: "#dcdcdc" }}>
           <PreviewDisplay />
         </div>
         {/* 서명 위치&크기 조절을 위한 <MoveHand> 렌더링 */}
