@@ -85,11 +85,11 @@ const Edit: React.FC = () => {
       };
     }
   }
-
+//style={{ backgroundColor: "#dcdcdc" }}
   return (
     <>
-      <div className="h-screen flex"> 
-        <div className="w-[361px] h-[1080px]" style={{ backgroundColor: "#dcdcdc" }}>
+      <div className="grid grid-cols-5 h-screen"> 
+        <div className="col-span-1" >
           {/* 이미지와 관련된 내용을 감싸는 div */}
           <div>
               {/* <SignHand>로 추가한 서명 렌더링 */}
@@ -162,9 +162,10 @@ const Edit: React.FC = () => {
           )}
         </div>
 
-        <div className="w-[1198px] h-[1080px] relative" style={{ backgroundColor: "red" }}>
-          <PdfDisplay file={file} />
-
+        <div className="col-span-3" style={{ backgroundColor: "#CECECE" }}>
+          <div>
+            <PdfDisplay file={file} />
+          </div>
           {/* 복제된 서명 렌더링 */}
           {copiedSigns1.map((imgInfo) => (
             <img
@@ -200,7 +201,7 @@ const Edit: React.FC = () => {
           ))}
         </div>
 
-        <div className="w-[361px] h-[1080px]" style={{ backgroundColor: "#dcdcdc" }}>
+        <div className="col-span-1" style={{ backgroundColor: "#dcdcdc" }}>
           <PreviewDisplay />
         </div>
         
