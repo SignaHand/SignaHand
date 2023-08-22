@@ -63,8 +63,29 @@ const Edit: React.FC = () => {
     setMoveHand("non-view");
   };
 
+  function drawSignature(
+    imgRef: React.RefObject<HTMLImageElement>,
+    dx: number,
+    dy: number
+  ) {
+    // canvas 요소 가져오기
+    const canvas: HTMLCanvasElement = document.getElementById(
+      "pdfCanvas"
+    ) as HTMLCanvasElement;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-//"grid grid-cols-5 h-screen flex"
+    // 싸인 이미지를 생성하고 로드
+    const signature = new Image();
+    signature.src = imgRef.current?.src as string;
+    if (signature) {
+      signature.onload = function () {
+        ctx.drawImage(signature, dx, dy, 150, 84);
+      };
+    }
+  }
+
   return (
     <>
       <div className="h-screen flex"> 
@@ -110,20 +131,35 @@ const Edit: React.FC = () => {
             </div>
           <SignatureDisplay />
 
+          {/* <SignHand>로 추가한 서명 렌더링 */}
+          {baseDataUrlArr[0] != "" && (
+            <img
+              src={baseDataUrlArr[0]}
+              ref={imgRef}
+              style={{
+                width: signWidth,
+                position: "absolute",
+                left: "0",
+                top: "50px",
+              }}
+              // onClick={startResize1}
+              onClick={() => drawSignature(imgRef, 420, 255)}
+            />
+          )}
           {baseDataUrlArr[1] != "" && (
-              <img
-                src={baseDataUrlArr[1]}
-                ref={imgRef2}
-                style={{
-                  width: signWidth,
-                  position: "absolute",
-                  left: "0",
-                  top: "150px",
-                }}
-                onClick={startResize2}
-              />
-            )}
-          
+            <img
+              src={baseDataUrlArr[1]}
+              ref={imgRef2}
+              style={{
+                width: signWidth,
+                position: "absolute",
+                left: "0",
+                top: "150px",
+              }}
+              // onClick={startResize2}
+              onClick={() => drawSignature(imgRef2, 420, 270)}
+            />
+          )}
         </div>
 
         <div className="w-[1198px] h-[1080px] relative" style={{ backgroundColor: "red" }}>
