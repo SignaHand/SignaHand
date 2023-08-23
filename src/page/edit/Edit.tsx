@@ -98,47 +98,15 @@ const Edit: React.FC = () => {
     <>
       <div className="grid grid-cols-10 h-screen"> 
         <div className="col-span-2" >
-          {/* 이미지와 관련된 내용을 감싸는 div */}
-          <button className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
+          <div 
+            className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
             style={{position: "fixed", top: "300px", left: "5%"}}
           >
-              {/* <SignHand>로 추가한 서명 렌더링 */}
-              {baseDataUrlArr[0] != "" && (
-                <div style={{ position: "relative" }}>
-                  <img
-                    src={baseDataUrlArr[0]}
-                    ref={imgRef}
-                    style={{width: signWidth, position: "absolute", left: "0", top: "50px",}}
-                    onClick={startResize1}
-                  />
-
-                  {/* 이미지가 생성된 후 나타낼 div */}
-                  {copiedSigns1.length > 0 && (
-                    <div
-                      className="w-[233px] h-[150px] bg-red shadow border border-red-600 border-opacity-20"
-                      style={{
-                        position: "absolute",
-                        left: "0",
-                        top: "50px",
-                        display: moveHand === "view" ? "block" : "none",
-                      }}
-                    >
-                      {/* 사인 이미지 표시 */}
-                        <img
-                          src={baseDataUrlArr[0]}
-                          ref={imgRef}
-                          style={{
-                            width: signWidth,
-                            position: "absolute",
-                            left: "0",
-                            top: "0",
-                          }}
-                        />
-                    </div>
-                  )}
-                </div>
-              )}
-            </button>
+          </div>
+          <div 
+            className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
+            style={{position: "fixed", top: "500px", left: "5%"}}
+          />
           <SignatureDisplay />
 
           {/* <SignHand>로 추가한 서명 렌더링 */}
