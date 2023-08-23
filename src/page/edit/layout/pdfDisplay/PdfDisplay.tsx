@@ -7,6 +7,7 @@ import React, { useEffect, useRef, useState } from "react";
 import * as pdfjsLib from "pdfjs-dist";
 import Loading from "../loading/Loading";
 import { useResizeContext } from "../../../../context/HandContext";
+import { Link } from "react-router-dom";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`;
 
@@ -160,15 +161,17 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
         {/* <button className="btn" onClick={drawSignature}>
           signature
         </button> */}
-        <button className="btn w-[250px] h-[70px] absolute shadow border border-zinc-400" onClick={saveImage}>
-          <div className="flex items-center">
-            <div className="w-[225px] h-[69px] left-[9px] top-[11px] absolute">
-              <img className="w-[50.74px] h-[50px] left-0 top-0 absolute border" src="/assets/images/pdfimg2.png" />
-              <div className="left-[70px] top-4 absolute text-black text-[20px] font-normal">saveImage</div>
+        <Link to="/End">
+          <button className="btn w-[250px] h-[70px] absolute shadow border border-zinc-400" onClick={saveImage}>
+            <div className="flex items-center">
+              <div className="w-[225px] h-[69px] left-[9px] top-[11px] absolute">
+                <img className="w-[50.74px] h-[50px] left-0 top-0 absolute border" src="/assets/images/pdfimg2.png" />
+                <div className="left-[70px] top-4 absolute text-black text-[20px] font-normal">saveImage</div>
+              </div>
+              <img className="w-[40px] h-[40px] absolute right-0" src="/assets/images/down.png"/>
             </div>
-            <img className="w-[40px] h-[40px] absolute right-0" src="/assets/images/down.png"/>
-          </div>
-        </button>
+          </button>
+        </Link>
       </div>
     </div>
     </>

@@ -4,6 +4,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import { HandContextProvider } from './context/HandContext';
 import Home from "./page/home/Home";
 import Edit from "./page/edit/Edit";
+import End from "./page/End"
 
 function App() {
     return (
@@ -11,8 +12,9 @@ function App() {
             <HandContextProvider>    
                 <BrowserRouter>
                     <Routes>
-                        <Route path="/" element={<Home/>}/>
-                        <Route path="/work" element={<Edit/>}/>
+                        <Route path="/" element={<Home/>} />
+                        <Route path="/work" element={<Edit/>} />
+                        <Route path="/End" element={<End/>} />
                     </Routes>
                 </BrowserRouter>
             </HandContextProvider>

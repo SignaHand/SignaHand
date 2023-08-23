@@ -85,13 +85,23 @@ const Edit: React.FC = () => {
       };
     }
   }
-//style={{ backgroundColor: "#dcdcdc" }}
+
+//   <button
+//   className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
+//   style={{position: "fixed", top: "300px", }}
+// >
+  
+// </button>
+
+
   return (
     <>
-      <div className="grid grid-cols-5 h-screen"> 
-        <div className="col-span-1" >
+      <div className="grid grid-cols-10 h-screen"> 
+        <div className="col-span-2" >
           {/* 이미지와 관련된 내용을 감싸는 div */}
-          <div>
+          <button className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
+            style={{position: "fixed", top: "300px", left: "5%"}}
+          >
               {/* <SignHand>로 추가한 서명 렌더링 */}
               {baseDataUrlArr[0] != "" && (
                 <div style={{ position: "relative" }}>
@@ -128,7 +138,7 @@ const Edit: React.FC = () => {
                   )}
                 </div>
               )}
-            </div>
+            </button>
           <SignatureDisplay />
 
           {/* <SignHand>로 추가한 서명 렌더링 */}
@@ -162,7 +172,7 @@ const Edit: React.FC = () => {
           )}
         </div>
 
-        <div className="col-span-3" style={{ backgroundColor: "#CECECE" }}>
+        <div className="col-span-6" style={{ backgroundColor: "#CECECE" }}>
           <div>
             <PdfDisplay file={file} />
           </div>
@@ -201,7 +211,7 @@ const Edit: React.FC = () => {
           ))}
         </div>
 
-        <div className="col-span-1" style={{ backgroundColor: "#dcdcdc" }}>
+        <div className="col-span-2">
           <PreviewDisplay />
         </div>
         
@@ -221,3 +231,4 @@ const Edit: React.FC = () => {
 };
 
 export default Edit;
+
