@@ -86,90 +86,49 @@ const Edit: React.FC = () => {
     }
   }
 
-//   <button
-//   className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
-//   style={{position: "fixed", top: "300px", }}
-// >
-  
-// </button>
+  //   <button
+  //   className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
+  //   style={{position: "fixed", top: "300px", }}
+  // >
 
+  // </button>
 
   return (
     <>
-      <div className="grid grid-cols-10 h-screen"> 
-        <div className="col-span-2" >
-          {/* 이미지와 관련된 내용을 감싸는 div */}
-          <button className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
-            style={{position: "fixed", top: "300px", left: "5%"}}
-          >
-              {/* <SignHand>로 추가한 서명 렌더링 */}
-              {baseDataUrlArr[0] != "" && (
-                <div style={{ position: "relative" }}>
-                  <img
-                    src={baseDataUrlArr[0]}
-                    ref={imgRef}
-                    style={{width: signWidth, position: "absolute", left: "0", top: "50px",}}
-                    onClick={startResize1}
-                  />
-
-                  {/* 이미지가 생성된 후 나타낼 div */}
-                  {copiedSigns1.length > 0 && (
-                    <div
-                      className="w-[233px] h-[150px] bg-red shadow border border-red-600 border-opacity-20"
-                      style={{
-                        position: "absolute",
-                        left: "0",
-                        top: "50px",
-                        display: moveHand === "view" ? "block" : "none",
-                      }}
-                    >
-                      {/* 사인 이미지 표시 */}
-                        <img
-                          src={baseDataUrlArr[0]}
-                          ref={imgRef}
-                          style={{
-                            width: signWidth,
-                            position: "absolute",
-                            left: "0",
-                            top: "0",
-                          }}
-                        />
-                    </div>
-                  )}
-                </div>
-              )}
-            </button>
-          <SignatureDisplay />
-
-          {/* <SignHand>로 추가한 서명 렌더링 */}
-          {baseDataUrlArr[0] != "" && (
+      <div className="grid grid-cols-10 h-screen">
+        <div className="col-span-2">
+          {/* 저장되는 서명 렌더링 */}
+          {baseDataUrlArr[0] != undefined && (
             <img
+              className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
               src={baseDataUrlArr[0]}
               ref={imgRef}
               style={{
                 width: signWidth,
-                position: "absolute",
-                left: "0",
-                top: "50px",
+                position: "fixed",
+                left: "5%",
+                top: "300px",
               }}
               // onClick={startResize1}
               onClick={() => drawSignature(imgRef, 420, 255)}
             />
           )}
-          {baseDataUrlArr[1] != "" && (
+          {baseDataUrlArr[1] != undefined && (
             <img
+              className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
               src={baseDataUrlArr[1]}
               ref={imgRef2}
               style={{
                 width: signWidth,
-                position: "absolute",
-                left: "0",
-                top: "150px",
+                position: "fixed",
+                left: "5%",
+                top: "500px",
               }}
               // onClick={startResize2}
               onClick={() => drawSignature(imgRef2, 420, 270)}
             />
           )}
+          <SignatureDisplay />
         </div>
 
         <div className="col-span-6" style={{ backgroundColor: "#CECECE" }}>
@@ -214,7 +173,7 @@ const Edit: React.FC = () => {
         <div className="col-span-2">
           <PreviewDisplay />
         </div>
-        
+
         {/* 서명 위치&크기 조절을 위한 <MoveHand> 렌더링 */}
         <div>
           {moveHand == "view" && (
@@ -231,4 +190,3 @@ const Edit: React.FC = () => {
 };
 
 export default Edit;
-
