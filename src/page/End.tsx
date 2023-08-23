@@ -5,17 +5,22 @@ import { Link } from "react-router-dom";
 const End = () => {
     return(
         <>
-            <div className="grid grid-row-2 h-screen" style={{backgroundColor:"red"}}>
-                <div className="grid grid-row-2 m-8" style={{backgroundColor:"yellow"}}>
-                    <img className="w-[120px] h-[120px] mt-10% relative" src='./assets/images/folder.png' />
-                    <div className="w-[936px] h-[162px] left-[492px] top-[337px] absolute text-center text-black text-[64px] font-bold">
+            <div className="grid grid-row-2 h-screen">
+                <div className="grid-row-1 m-8">
+                    <div className='flex justify-center h-full'>
+                        <img className="w-[100px] h-[100px] mt-50" src='./assets/images/folder.png' />
+                    </div>
+                    <div className="w-[936px] h-[162px] left-1/2 top-1/2 absolute transform -translate-x-1/2 -translate-y-1/2 text-center text-black text-[64px] font-bold">
                         다운로드가 완료되었습니다.
                     </div>
                 </div>
-                <div className="m-8" style={{backgroundColor:"green"}}>
-                    <Link to="/" className='w-[470px] h-[123px] left-[725px] top-[568px] absolute'>
-                        <button className="w-[470px] h-[123px] absolute text-center text-[40px] font-extrabold">처음 페이지로</button>
-                    </Link>
+                <div className="grid-row-1 m-8">
+                    <div className='flex flex-col items-center justify-center h-full'>
+                        <div className="text-4xl font-bold mb-4">다른 파일도 이용하고 싶다면?</div>
+                        <Link to="/" className="btn w-[600px] h-[123px] text-xl text-center text-white text-[45px] font-extrabold bg-red-500 rounded-[30px]">
+                            처음 페이지로
+                        </Link>
+                    </div>
                 </div>
             </div>
         </>
