@@ -110,7 +110,7 @@ const Edit: React.FC = () => {
                 top: "300px",
               }}
               // onClick={startResize1}
-              onClick={() => drawSignature(imgRef, 420, 255)}
+              onClick={() => drawSignature(imgRef, 320, 460)}
             />
           )}
           {baseDataUrlArr[1] != undefined && (
@@ -125,7 +125,7 @@ const Edit: React.FC = () => {
                 top: "500px",
               }}
               // onClick={startResize2}
-              onClick={() => drawSignature(imgRef2, 420, 270)}
+              onClick={() => drawSignature(imgRef2, 320, 500)}
             />
           )}
           <SignatureDisplay />
