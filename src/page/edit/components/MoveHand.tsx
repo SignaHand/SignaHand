@@ -20,7 +20,7 @@ const MoveHand: React.FC<MoveHandProps> = ({onFinish}) => {
   // webcamRef와 resultsRef는 useRef를 통해 웹캠과 손 인식 결과를 저장
   const webcamRef = useRef<Webcam>(null); // 웹캠과 캔버스 요소에 대한 ref 생성
   const resultsRef = useRef<Results>();  // Results : 손 인식 결과
-  const { copiedSigns1, copiedSigns2, copiedSigns3, selectedSign } = useResizeContext();
+  const { copiedSigns1, copiedSigns2, copiedSigns3, copiedSigns4, copiedSigns5, copiedSigns6, selectedSign } = useResizeContext();
 
   
 
@@ -35,8 +35,17 @@ const MoveHand: React.FC<MoveHandProps> = ({onFinish}) => {
     } else if (selectedSign == 2) { // 두 번째 서명 클릭한 경우
       const lastCopiedImage = copiedSigns2[copiedSigns2.length - 1];
       copiedImgRef = lastCopiedImage.ref;
-    } else if (selectedSign == 3) { // 두 번째 서명 클릭한 경우
+    } else if (selectedSign == 3) { // 세 번째 서명 클릭한 경우
       const lastCopiedImage = copiedSigns3[copiedSigns3.length - 1];
+      copiedImgRef = lastCopiedImage.ref;
+    } else if (selectedSign == 4) { // 네 번째 서명 클릭한 경우
+      const lastCopiedImage = copiedSigns3[copiedSigns4.length - 1];
+      copiedImgRef = lastCopiedImage.ref;
+    } else if (selectedSign == 5) { // 다섯 번째 서명 클릭한 경우
+      const lastCopiedImage = copiedSigns3[copiedSigns5.length - 1];
+      copiedImgRef = lastCopiedImage.ref;
+    } else if (selectedSign == 6) { // 여섯 번째 서명 클릭한 경우
+      const lastCopiedImage = copiedSigns3[copiedSigns6.length - 1];
       copiedImgRef = lastCopiedImage.ref;
     } 
     

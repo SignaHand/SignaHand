@@ -11,13 +11,15 @@ import SignatureDisplay from "./layout/signatureDisplay/SignatureDisplay";
 import PreviewDisplay from "./layout/previewDisplay/PreviewDisplay";
 import MoveHand from "./components/MoveHand";
 
-// **************
 const Edit: React.FC = () => {
   const { baseDataUrlArr } = useHandContext(); // 서명 이미지 문자열이 저장된 배열
   const {
     imgRef,
     imgRef2,
     imgRef3,
+    imgRef4,
+    imgRef5,
+    imgRef6,
     signWidth,
     copiedSigns1,
     setCopiedSigns1,
@@ -25,6 +27,12 @@ const Edit: React.FC = () => {
     setCopiedSigns2,
     copiedSigns3,
     setCopiedSigns3,
+    copiedSigns4,
+    setCopiedSigns4,
+    copiedSigns5,
+    setCopiedSigns5,
+    copiedSigns6,
+    setCopiedSigns6,
     setSelectedSign,
   } = useResizeContext(); // 서명 이동&크기 조절을 위한 Context
 
@@ -38,7 +46,6 @@ const Edit: React.FC = () => {
   const newImageRef = useRef<HTMLImageElement>(null);
 
   // 서명 복제, 위치&크기 조절 시작하기
-  // ***************************
   const startResize1 = () => {
     setMoveHand("view");
     setCopiedSigns1([
@@ -63,9 +70,32 @@ const Edit: React.FC = () => {
     ]);
     setSelectedSign(3);
   };
+  const startResize4 = () => {
+    setMoveHand("view");
+    setCopiedSigns4([
+      ...copiedSigns4,
+      { id: copiedSigns4.length, ref: newImageRef },
+    ]);
+    setSelectedSign(4);
+  };
+  const startResize5 = () => {
+    setMoveHand("view");
+    setCopiedSigns5([
+      ...copiedSigns5,
+      { id: copiedSigns5.length, ref: newImageRef },
+    ]);
+    setSelectedSign(5);
+  };
+  const startResize6 = () => {
+    setMoveHand("view");
+    setCopiedSigns6([
+      ...copiedSigns6,
+      { id: copiedSigns6.length, ref: newImageRef },
+    ]);
+    setSelectedSign(6);
+  };
 
   // 렌더링된 서명 이미지 클릭 시 제거
-  // ******************* -> 음??
   const handleSignClick1 = (imgId: number) => {
     console.log("id", imgId, " 이미지 제거");
     setCopiedSigns1(copiedSigns1.filter((imgInfo) => imgInfo.id !== imgId));
@@ -79,6 +109,21 @@ const Edit: React.FC = () => {
   const handleSignClick3 = (imgId: number) => {
     console.log("id", imgId, " 이미지 제거");
     setCopiedSigns3(copiedSigns3.filter((imgInfo) => imgInfo.id !== imgId));
+    setMoveHand("non-view");
+  };
+  const handleSignClick4 = (imgId: number) => {
+    console.log("id", imgId, " 이미지 제거");
+    setCopiedSigns4(copiedSigns4.filter((imgInfo) => imgInfo.id !== imgId));
+    setMoveHand("non-view");
+  };
+  const handleSignClick5 = (imgId: number) => {
+    console.log("id", imgId, " 이미지 제거");
+    setCopiedSigns5(copiedSigns3.filter((imgInfo) => imgInfo.id !== imgId));
+    setMoveHand("non-view");
+  };
+  const handleSignClick6 = (imgId: number) => {
+    console.log("id", imgId, " 이미지 제거");
+    setCopiedSigns6(copiedSigns3.filter((imgInfo) => imgInfo.id !== imgId));
     setMoveHand("non-view");
   };
 
@@ -116,7 +161,7 @@ const Edit: React.FC = () => {
     <>
       <div className="grid grid-cols-10 h-screen">
         <div className="col-span-2">
-          {/* 저장되는 서명 렌더링 *********************************/}
+          {/* 저장되는 서명 렌더링 */}
           {baseDataUrlArr[0] != undefined && (
             <img
               className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
@@ -162,6 +207,51 @@ const Edit: React.FC = () => {
               onClick={() => drawSignature(imgRef3, 420, 285)}
             />
           )}
+          {baseDataUrlArr[3] != undefined && (
+            <img
+              className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
+              src={baseDataUrlArr[3]}
+              ref={imgRef4}
+              style={{
+                width: signWidth,
+                position: "fixed",
+                left: "5%",
+                top: "900px",
+              }}
+              // onClick={startResize3}
+              onClick={() => drawSignature(imgRef4, 420, 300)}
+            />
+          )}
+          {baseDataUrlArr[4] != undefined && (
+            <img
+              className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
+              src={baseDataUrlArr[4]}
+              ref={imgRef5}
+              style={{
+                width: signWidth,
+                position: "fixed",
+                left: "5%",
+                top: "1100px",
+              }}
+              // onClick={startResize3}
+              onClick={() => drawSignature(imgRef5, 420, 315)}
+            />
+          )}
+          {baseDataUrlArr[5] != undefined && (
+            <img
+              className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
+              src={baseDataUrlArr[5]}
+              ref={imgRef6}
+              style={{
+                width: signWidth,
+                position: "fixed",
+                left: "5%",
+                top: "1300px",
+              }}
+              // onClick={startResize3}
+              onClick={() => drawSignature(imgRef6, 420, 330)}
+            />
+          )}
           <SignatureDisplay />
         </div>
 
@@ -169,7 +259,7 @@ const Edit: React.FC = () => {
           <div>
             <PdfDisplay file={file} />
           </div>
-          {/* 복제된 서명 렌더링 ***************************/}
+          {/* 복제된 서명 렌더링 */}
           {copiedSigns1.map((imgInfo) => (
             <img
               key={imgInfo.id}
@@ -215,6 +305,54 @@ const Edit: React.FC = () => {
               }}
               onClick={() => {
                 handleSignClick3(imgInfo.id);
+              }}
+            />
+          ))}
+          {copiedSigns4.map((imgInfo) => (
+            <img
+              key={imgInfo.id}
+              src={baseDataUrlArr[3]}
+              ref={imgInfo.ref}
+              style={{
+                width: signWidth,
+                position: "absolute",
+                left: "361px",
+                top: "150px",
+              }}
+              onClick={() => {
+                handleSignClick4(imgInfo.id);
+              }}
+            />
+          ))}
+          {copiedSigns5.map((imgInfo) => (
+            <img
+              key={imgInfo.id}
+              src={baseDataUrlArr[4]}
+              ref={imgInfo.ref}
+              style={{
+                width: signWidth,
+                position: "absolute",
+                left: "361px",
+                top: "150px",
+              }}
+              onClick={() => {
+                handleSignClick5(imgInfo.id);
+              }}
+            />
+          ))}
+          {copiedSigns6.map((imgInfo) => (
+            <img
+              key={imgInfo.id}
+              src={baseDataUrlArr[5]}
+              ref={imgInfo.ref}
+              style={{
+                width: signWidth,
+                position: "absolute",
+                left: "361px",
+                top: "150px",
+              }}
+              onClick={() => {
+                handleSignClick6(imgInfo.id);
               }}
             />
           ))}

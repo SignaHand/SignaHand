@@ -28,24 +28,31 @@ interface CopiedImgInfo {
 }
 
 // ResizeHand 컴포넌트와 관련하여 사용되는 상태와 함수의 타입 지정
-// ****************
 interface ResizeContextType {
   imgRef: React.RefObject<HTMLImageElement>; // <SignHand>로 저장한 서명에 대한 ref
   imgRef2: React.RefObject<HTMLImageElement>;
   imgRef3: React.RefObject<HTMLImageElement>;
+  imgRef4: React.RefObject<HTMLImageElement>;
+  imgRef5: React.RefObject<HTMLImageElement>;
+  imgRef6: React.RefObject<HTMLImageElement>;
 
   copiedImgRef: React.RefObject<HTMLImageElement>; // 복제된 서명에 대한 ref
 
   signWidth: string; // 서명 크기 조절을 위한 width, height
   signHeight: string;
 
-  // ***********
   copiedSigns1: CopiedImgInfo[]; // 복제된 서명 이미지들의 정보를 저장하는 배열
   setCopiedSigns1: React.Dispatch<React.SetStateAction<CopiedImgInfo[]>>;
   copiedSigns2: CopiedImgInfo[];
   setCopiedSigns2: React.Dispatch<React.SetStateAction<CopiedImgInfo[]>>;
   copiedSigns3: CopiedImgInfo[];
   setCopiedSigns3: React.Dispatch<React.SetStateAction<CopiedImgInfo[]>>;
+  copiedSigns4: CopiedImgInfo[];
+  setCopiedSigns4: React.Dispatch<React.SetStateAction<CopiedImgInfo[]>>;
+  copiedSigns5: CopiedImgInfo[];
+  setCopiedSigns5: React.Dispatch<React.SetStateAction<CopiedImgInfo[]>>;
+  copiedSigns6: CopiedImgInfo[];
+  setCopiedSigns6: React.Dispatch<React.SetStateAction<CopiedImgInfo[]>>;
 
   selectedSign: number; // 저장된 두 개의 서명 중 어떤 서명을 복제&이동 할 것인지 결정
   setSelectedSign: React.Dispatch<React.SetStateAction<number>>;
@@ -89,18 +96,23 @@ export const HandContextProvider: React.FC<HandContextProviderProps> = ({
   // const [baseDataUrl, setBaseDataUrl] = useState<string>("");
   const [baseDataUrlArr, setBaseDataUrlArr] = useState<string[]>([]);
   const [imgNumber, setImgNumber] = useState<number>(0);
-  // *********************
+
   const imgRef = useRef<HTMLImageElement>(null);
   const imgRef2 = useRef<HTMLImageElement>(null);
   const imgRef3 = useRef<HTMLImageElement>(null);
+  const imgRef4 = useRef<HTMLImageElement>(null);
+  const imgRef5 = useRef<HTMLImageElement>(null);
+  const imgRef6 = useRef<HTMLImageElement>(null);
   const copiedImgRef = useRef<HTMLImageElement>(null);
   const [signWidth] = useState<string>("200px");
   const [signHeight] = useState<string>("200px");
 
-  // *********************
   const [copiedSigns1, setCopiedSigns1] = useState<CopiedImgInfo[]>([]);
   const [copiedSigns2, setCopiedSigns2] = useState<CopiedImgInfo[]>([]);
   const [copiedSigns3, setCopiedSigns3] = useState<CopiedImgInfo[]>([]);
+  const [copiedSigns4, setCopiedSigns4] = useState<CopiedImgInfo[]>([]);
+  const [copiedSigns5, setCopiedSigns5] = useState<CopiedImgInfo[]>([]);
+  const [copiedSigns6, setCopiedSigns6] = useState<CopiedImgInfo[]>([]);
 
   const [selectedSign, setSelectedSign] = useState<number>(1);
 
@@ -128,12 +140,14 @@ export const HandContextProvider: React.FC<HandContextProviderProps> = ({
         handleBaseDataUrlChange,
       }}
     >
-      {/* ************ */}
       <ResizeContext.Provider
         value={{
           imgRef,
           imgRef2,
           imgRef3,
+          imgRef4,
+          imgRef5,
+          imgRef6,
           copiedImgRef,
           signWidth,
           signHeight,
@@ -143,6 +157,12 @@ export const HandContextProvider: React.FC<HandContextProviderProps> = ({
           setCopiedSigns2,
           copiedSigns3,
           setCopiedSigns3,
+          copiedSigns4,
+          setCopiedSigns4,
+          copiedSigns5,
+          setCopiedSigns5,
+          copiedSigns6,
+          setCopiedSigns6,
           selectedSign,
           setSelectedSign,
         }}
