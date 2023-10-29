@@ -15,18 +15,19 @@ interface MoveHandProps {
   onFinish: () => void;
 }
 
-
+// MoveHand 컴포넌트는 onFinish 콜백함수를 prop으로 받는다.
 const MoveHand: React.FC<MoveHandProps> = ({onFinish}) => {
+  // webcamRef와 resultsRef는 useRef를 통해 웹캠과 손 인식 결과를 저장
   const webcamRef = useRef<Webcam>(null); // 웹캠과 캔버스 요소에 대한 ref 생성
   const resultsRef = useRef<Results>();  // Results : 손 인식 결과
-  const { copiedSigns1, copiedSigns2, selectedSign } = useResizeContext();
+  const { copiedSigns1, copiedSigns2, copiedSigns3, selectedSign } = useResizeContext();
 
   
 
   const ResultsListener = (results: Results) => {
-    resultsRef.current = results;
-    const handMode = moveImg(results);
-    let copiedImgRef;
+    resultsRef.current = results; // 손 인식 결과(Results 객체)를 resultRef에 저장
+    const handMode = moveImg(results); // moveImg에 손 인식 결과를 전달
+    let copiedImgRef; // 현재 선택된 서명 이미지에 대한 참조를 copiedImgRef에 저장
   
     if (selectedSign == 1) { // 첫 번째 서명 클릭한 경우
       const lastCopiedImage = copiedSigns1[copiedSigns1.length - 1];
@@ -34,7 +35,10 @@ const MoveHand: React.FC<MoveHandProps> = ({onFinish}) => {
     } else if (selectedSign == 2) { // 두 번째 서명 클릭한 경우
       const lastCopiedImage = copiedSigns2[copiedSigns2.length - 1];
       copiedImgRef = lastCopiedImage.ref;
-    }
+    } else if (selectedSign == 3) { // 두 번째 서명 클릭한 경우
+      const lastCopiedImage = copiedSigns3[copiedSigns3.length - 1];
+      copiedImgRef = lastCopiedImage.ref;
+    } 
     
     if(copiedImgRef && copiedImgRef.current){
         // 위치 조절을 위한 변수
