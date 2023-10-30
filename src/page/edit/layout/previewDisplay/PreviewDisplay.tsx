@@ -16,8 +16,6 @@ interface PreviewDisplayProps {
 
 const PreviewDisplay: React.FC<PreviewDisplayProps> = ({ file }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const buttonRefs = useRef<Array<HTMLButtonElement | null>>([]);
-  const canvasRefs = useRef<Array<HTMLCanvasElement | null>>([]);
   const numPagesRef = useRef<number | null>(null);
   const { currentPage, setCurrentPage } = usePdfPageContext(); // pdf 페이지 이동을 위한 Context
 
@@ -36,7 +34,6 @@ const PreviewDisplay: React.FC<PreviewDisplayProps> = ({ file }) => {
       const pdf = await loadingTask.promise;
       //   const page = await pdf.getPage(numPages);
       numPagesRef.current = pdf.numPages;
-      console.log(pdf.numPages);
       try {
         // 각 페이지를 렌더링
         for (let i = 0; i < numPagesRef.current; i++) {
@@ -44,11 +41,9 @@ const PreviewDisplay: React.FC<PreviewDisplayProps> = ({ file }) => {
           button.className =
             "w-[248px] h-[331px] my-10 flex items-center justify-center row-span-1 bg-white shadow-lg border border-stone-300";
           button.onclick = () => {
-            console.log(i + 1);
             setCurrentPage(i + 1);
           };
 
-          buttonRefs.current.push(button);
           container.appendChild(button);
 
           const canvas = document.createElement("canvas");
@@ -72,19 +67,7 @@ const PreviewDisplay: React.FC<PreviewDisplayProps> = ({ file }) => {
   return (
     <div className="flex w-full h-screen justify-center px-auto pb-10">
       <div className="flex w-full h-full justify-center overflow-y-scroll">
-        <div ref={containerRef}>
-          {buttonRefs.current.map((button, index) => (
-            <button
-              key={index}
-              ref={(buttonRef) => (buttonRefs.current[index] = buttonRef)}
-            >
-              <canvas
-                key={index}
-                ref={(canvasRef) => (canvasRefs.current[index] = canvasRef)}
-              />
-            </button>
-          ))}
-        </div>
+        <div ref={containerRef}></div>
       </div>
     </div>
   );
