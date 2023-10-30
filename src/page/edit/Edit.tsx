@@ -127,6 +127,12 @@ const Edit: React.FC = () => {
     setMoveHand("non-view");
   };
 
+  function handleDragStart(e: React.DragEvent<HTMLImageElement>) {
+    if (!e.target) return;
+    const target = e.target as HTMLImageElement;
+    e.dataTransfer.setData("text/plain", target.id);
+  }
+
   function drawSignature(
     imgRef: React.RefObject<HTMLImageElement>,
     dx: number,
@@ -164,6 +170,9 @@ const Edit: React.FC = () => {
           {/* 저장되는 서명 렌더링 */}
           {baseDataUrlArr[0] != undefined && (
             <img
+              id="signatureImage"
+              draggable
+              onDragStart={(e) => handleDragStart(e)}
               className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
               src={baseDataUrlArr[0]}
               ref={imgRef}
@@ -179,6 +188,9 @@ const Edit: React.FC = () => {
           )}
           {baseDataUrlArr[1] != undefined && (
             <img
+              id="signatureImage2"
+              draggable
+              onDragStart={(e) => handleDragStart(e)}
               className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
               src={baseDataUrlArr[1]}
               ref={imgRef2}

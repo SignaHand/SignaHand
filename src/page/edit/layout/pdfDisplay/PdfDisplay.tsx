@@ -96,7 +96,12 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
      * */
   }
 
-  function drawSignature() {
+  // 이벤트 핸들러 함수 추가
+  function handleDragOver(e: React.DragEvent<HTMLDivElement>) {
+    e.preventDefault();
+  }
+
+  const drawSignature = (src: string, dx: number, dy: number) => {
     // canvas 요소 가져오기
     const canvas: HTMLCanvasElement = document.getElementById(
       "pdfCanvas"
@@ -105,15 +110,51 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // 싸인 이미지를 생성하고 로드
+    // 서명 이미지를 생성하고 로드
     const signature = new Image();
-    signature.src = imgRef.current?.src as string;
-    if (signature) {
-      signature.onload = function () {
-        ctx.drawImage(signature, 420, 260, 150, 84);
-      };
+    signature.src = src;
+    signature.onload = function () {
+      ctx.drawImage(signature, dx, dy, 150, 84);
+    };
+  };
+
+  function handleDrop(e: React.DragEvent<HTMLDivElement>) {
+    e.preventDefault();
+    const data = e.dataTransfer.getData("text");
+    const img = document.getElementById(data) as HTMLImageElement;
+
+    console.log("check img", data, img);
+
+    if (img) {
+      const canvas: HTMLCanvasElement = document.getElementById(
+        "pdfCanvas"
+      ) as HTMLCanvasElement;
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left - 70;
+      const y = e.clientY - rect.top - 30;
+      console.log(x, y);
+      drawSignature(img.src, x, y); // 서명 그리기
     }
   }
+
+  // function drawSignature() {
+  //   // canvas 요소 가져오기
+  //   const canvas: HTMLCanvasElement = document.getElementById(
+  //     "pdfCanvas"
+  //   ) as HTMLCanvasElement;
+  //   if (!canvas) return;
+  //   const ctx = canvas.getContext("2d");
+  //   if (!ctx) return;
+
+  //   // 싸인 이미지를 생성하고 로드
+  //   const signature = new Image();
+  //   signature.src = imgRef.current?.src as string;
+  //   if (signature) {
+  //     signature.onload = function () {
+  //       ctx.drawImage(signature, 420, 260, 150, 84);
+  //     };
+  //   }
+  // }
 
   function saveImage() {
     // canvas 가져오기
@@ -144,36 +185,57 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
 
   return (
     <>
-    <div className="flex mt-10 justify-center h-screen">
-      <div className="relative" >
-        {loading && <Loading fileName={file.name} />}
-        <div ref={containerRef}></div>
-        {currentPage !== 1 && (
-          <button className="btn w-[150px] h-[70px] shadow border border-zinc-400" onClick={onHandlePrevPage}>
-            prev
-          </button>
-        )}
-        {currentPage !== numPages && (
-          <button className="btn w-[150px] h-[70px] shadow border border-zinc-400" onClick={onHandleNextPage}>
-            next
-          </button>
-        )}
-        {/* <button className="btn" onClick={drawSignature}>
+      <div className="flex mt-10 justify-center h-screen">
+        <div className="relative">
+          {loading && <Loading fileName={file.name} />}
+          <div
+            ref={containerRef}
+            onDragOver={handleDragOver} // 드래그 오버 이벤트 핸들러 추가
+            onDrop={handleDrop} // 드롭 이벤트 핸들러 추가
+          ></div>
+          {currentPage !== 1 && (
+            <button
+              className="btn w-[150px] h-[70px] shadow border border-zinc-400"
+              onClick={onHandlePrevPage}
+            >
+              prev
+            </button>
+          )}
+          {currentPage !== numPages && (
+            <button
+              className="btn w-[150px] h-[70px] shadow border border-zinc-400"
+              onClick={onHandleNextPage}
+            >
+              next
+            </button>
+          )}
+          {/* <button className="btn" onClick={drawSignature}>
           signature
         </button> */}
-        <Link to="/End">
-          <button className="btn w-[250px] h-[70px] absolute shadow border border-zinc-400" onClick={saveImage}>
-            <div className="flex items-center">
-              <div className="w-[225px] h-[69px] left-[9px] top-[11px] absolute">
-                <img className="w-[50.74px] h-[50px] left-0 top-0 absolute border" src="/assets/images/pdfimg2.png" />
-                <div className="left-[70px] top-4 absolute text-black text-[20px] font-normal">saveImage</div>
+          <Link to="/End">
+            <button
+              className="btn w-[250px] h-[70px] absolute shadow border border-zinc-400"
+              onClick={saveImage}
+            >
+              <div className="flex items-center">
+                <div className="w-[225px] h-[69px] left-[9px] top-[11px] absolute">
+                  <img
+                    className="w-[50.74px] h-[50px] left-0 top-0 absolute border"
+                    src="/assets/images/pdfimg2.png"
+                  />
+                  <div className="left-[70px] top-4 absolute text-black text-[20px] font-normal">
+                    saveImage
+                  </div>
+                </div>
+                <img
+                  className="w-[40px] h-[40px] absolute right-0"
+                  src="/assets/images/down.png"
+                />
               </div>
-              <img className="w-[40px] h-[40px] absolute right-0" src="/assets/images/down.png"/>
-            </div>
-          </button>
-        </Link>
+            </button>
+          </Link>
+        </div>
       </div>
-    </div>
     </>
   );
 };
