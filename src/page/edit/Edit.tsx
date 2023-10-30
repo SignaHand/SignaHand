@@ -165,7 +165,7 @@ const Edit: React.FC = () => {
 
   return (
     <>
-      <div className="grid grid-cols-10 h-screen">
+      <div className="grid grid-cols-10 h-full">
         <div className="col-span-2">
           {/* 저장되는 서명 렌더링 */}
           {baseDataUrlArr[0] != undefined && (
@@ -371,7 +371,7 @@ const Edit: React.FC = () => {
         </div>
 
         <div className="col-span-2">
-          <PreviewDisplay />
+          <PreviewDisplay file={file} />
         </div>
 
         {/* 서명 위치&크기 조절을 위한 <MoveHand> 렌더링 */}

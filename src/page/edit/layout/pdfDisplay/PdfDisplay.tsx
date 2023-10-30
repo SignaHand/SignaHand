@@ -185,7 +185,7 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
 
   return (
     <>
-      <div className="flex mt-10 justify-center h-screen">
+      <div className="flex mt-10 justify-center h-full">
         <div className="relative">
           {loading && <Loading fileName={file.name} />}
           <div
