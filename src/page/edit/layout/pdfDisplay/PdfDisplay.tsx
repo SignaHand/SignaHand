@@ -6,7 +6,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as pdfjsLib from "pdfjs-dist";
 import Loading from "../loading/Loading";
-import { useResizeContext } from "../../../../context/HandContext";
+import {
+  useResizeContext,
+  usePdfPageContext,
+} from "../../../../context/HandContext";
 import { Link } from "react-router-dom";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`;
@@ -19,7 +22,7 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(true);
   const [numPages, setNumPages] = useState<number>(100);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  // const [currentPage, setCurrentPage] = useState<number>(1);
   const {
     imgRef,
     imgRef2,
@@ -30,6 +33,7 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
     setCopiedSigns2,
     setSelectedSign,
   } = useResizeContext(); // 서명 이동&크기 조절을 위한 Context
+  const { currentPage, setCurrentPage } = usePdfPageContext(); // pdf 페이지 이동을 위한 Context
 
   /* PDF 파일을 뷰어에 띄우기 위해서는 URL을 사용해야함 */
   const pdfUrl = URL.createObjectURL(file);

@@ -268,9 +268,7 @@ const Edit: React.FC = () => {
         </div>
 
         <div className="col-span-6" style={{ backgroundColor: "#CECECE" }}>
-          <div>
-            <PdfDisplay file={file} />
-          </div>
+          <PdfDisplay file={file} />
           {/* 복제된 서명 렌더링 */}
           {copiedSigns1.map((imgInfo) => (
             <img

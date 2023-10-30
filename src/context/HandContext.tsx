@@ -58,6 +58,12 @@ interface ResizeContextType {
   setSelectedSign: React.Dispatch<React.SetStateAction<number>>;
 }
 
+// PdfDisplay 컴포넌트와 관련하여 사용되는 상태와 함수의 타입 지정
+interface PdfPageContextType {
+  currentPage: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+}
+
 interface HandContextProviderProps {
   children: ReactNode;
 }
@@ -65,6 +71,7 @@ interface HandContextProviderProps {
 // Context 생성
 const HandContext = createContext<HandContextType | undefined>(undefined);
 const ResizeContext = createContext<ResizeContextType | undefined>(undefined);
+const PdfPageContext = createContext<PdfPageContextType | undefined>(undefined);
 
 // HandContext가 관리하는 상태와 함수를 사용할 수 있도록 하는 커스텀 훅
 export const useHandContext = () => {
@@ -88,12 +95,23 @@ export const useResizeContext = () => {
   return context;
 };
 
+// PdfPageContext가 관리하는 상태와 함수를 사용할 수 있도록 하는 커스텀 훅
+export const usePdfPageContext = () => {
+  const context = useContext(PdfPageContext);
+  if (context === undefined) {
+    throw new Error(
+      "usePdfPageContext should be used within an AppContextProvider"
+    );
+  }
+  return context;
+};
+
 // 상태와 함수를 관리, 제공하는 컴포넌트
 export const HandContextProvider: React.FC<HandContextProviderProps> = ({
   children,
 }) => {
   const [canvas, setCanvas] = useState<string>("non-view");
-  // const [baseDataUrl, setBaseDataUrl] = useState<string>("");
+
   const [baseDataUrlArr, setBaseDataUrlArr] = useState<string[]>([]);
   const [imgNumber, setImgNumber] = useState<number>(0);
 
@@ -117,6 +135,8 @@ export const HandContextProvider: React.FC<HandContextProviderProps> = ({
   const [selectedSign, setSelectedSign] = useState<number>(1);
 
   const [moveHand, setMoveHand] = useState<string>("non-view");
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const handleBaseDataUrlChange = (baseDataUrl: string) => {
     if (baseDataUrl !== "") {
@@ -167,7 +187,14 @@ export const HandContextProvider: React.FC<HandContextProviderProps> = ({
           setSelectedSign,
         }}
       >
-        {children}
+        <PdfPageContext.Provider
+          value={{
+            currentPage,
+            setCurrentPage,
+          }}
+        >
+          {children}
+        </PdfPageContext.Provider>
       </ResizeContext.Provider>
     </HandContext.Provider>
   );
