@@ -5,7 +5,7 @@
  * */
 //모달창 생성 파일
 //document 에 mousedown 이벤트핸들러를 등록하고, 모달창 영역이 아닐 경우에만, modalOpen 상태를 false로 전환
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { useHandContext } from "../../../../context/HandContext";
 import SignHand from "./components/SignHand";
 
@@ -26,33 +26,13 @@ const SignatureModal: React.FC<SignatureModalProps> = ({
   modal,
 }) => {
   const { canvas, setCanvas, handleBaseDataUrlChange } = useHandContext();
+  const [isClose, setIsClose] = React.useState<number>(0);
 
   const canvasRef = useRef<HTMLCanvasElement>(null); // 서명을 위한 canvas
-  // 모달 끄기 (X버튼 onClick 이벤트 핸들러)
 
-  // useEffect(() => {
-  //     //이벤트 핸들러 함수
-  //     const handler = (event: MouseEvent) => {
-  //         // mousedown 이벤트가 발생한 영역이 모달창이 아닐 때, 모달창 제거 처리
-  //         if (modal.current && !modal.current.contains(event.target as Node)) {
-  //             setModalOpen(false);
-  //         }
-  //     };
-  //
-  //     //이벤트 핸들러 등록
-  //     document.addEventListener('mousedown', handler);
-  //
-  //     return () => {
-  //         // 이벤트 핸들러 해제
-  //         document.removeEventListener('mousedown', handler);
-  //     };
-  // });
-
+  // 서명 모달창 close 기능을 위한 핸들러 함수
   const closeModal = async () => {
-    if (modal.current) {
-      modal.current.close();
-    }
-    setCanvas("non-view");
+    setIsClose(isClose + 1);
   };
 
   // 서명 캔버스 초기화
@@ -87,20 +67,19 @@ const SignatureModal: React.FC<SignatureModalProps> = ({
     }
   };
 
+  // useEffect를 사용하여 isClose 상태가 변경될 때마다 모달이 닫히도록 함
+  useEffect(() => {
+    const closeModalWithEffect = async () => {
+      if (modal.current) {
+        modal.current.close();
+      }
+      setCanvas("non-view");
+    };
+    closeModalWithEffect();
+  }, [isClose]);
+
   return (
     <>
-      {/* <div>
-        {canvas === "view" && (
-          <div>
-            <p>손으로 그리기!</p>
-            <SignHand onCloseModal={closeModal} />
-            <button className="btn" onClick={closeModal}>
-              XXXXXXXXXX
-            </button>
-          </div>
-        )}
-      </div> */}
-
       <div>
         {canvas === "view" && (
           <div className="w-[920px] h-[515px] relative shadow">
