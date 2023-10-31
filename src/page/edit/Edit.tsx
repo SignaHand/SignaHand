@@ -20,6 +20,8 @@ const Edit: React.FC = () => {
     imgRef4,
     imgRef5,
     imgRef6,
+    buttonRef,
+
     signWidth,
     copiedSigns1,
     setCopiedSigns1,
@@ -44,6 +46,15 @@ const Edit: React.FC = () => {
   const [moveHand, setMoveHand] = useState("non-view");
 
   const newImageRef = useRef<HTMLImageElement>(null);
+
+  {/* new code : 사인 삭체 코드 - 예비 */}
+  // 사인 삭제 버튼을 누를 때 호출되는 함수
+  const ImgClear = () => {
+    const imgToRemove = imgRef.current;
+    if (imgToRemove) {
+      imgToRemove.remove();
+    }
+  };
 
   // 서명 복제, 위치&크기 조절 시작하기
   const startResize1 = () => {
@@ -100,6 +111,12 @@ const Edit: React.FC = () => {
     console.log("id", imgId, " 이미지 제거");
     setCopiedSigns1(copiedSigns1.filter((imgInfo) => imgInfo.id !== imgId));
     setMoveHand("non-view");
+
+    {/* new code : 사인 삭체 코드 */}
+    const imgToRemove = imgRef.current;
+    if (imgToRemove) {
+      imgToRemove.remove();
+    }
   };
   const handleSignClick2 = (imgId: number) => {
     console.log("id", imgId, " 이미지 제거");
@@ -166,27 +183,40 @@ const Edit: React.FC = () => {
   // </button>
 
   return (
-    <>
+    <div>
       <div className="grid grid-cols-10 h-full">
         <div className="col-span-2">
           {/* 저장되는 서명 렌더링 */}
           {baseDataUrlArr[0] != undefined && (
-            <img
-              id="signatureImage"
-              draggable
-              onDragStart={(e) => handleDragStart(e)}
-              className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
-              src={baseDataUrlArr[0]}
-              ref={imgRef}
-              style={{
-                width: signWidth,
-                position: "fixed",
-                left: "5%",
-                top: "300px",
-              }}
-              // onClick={startResize1}
-              onClick={() => drawSignature(imgRef, 420, 255)}
-            />
+            <div>
+              <img
+                id="signatureImage"
+                draggable
+                onDragStart={(e) => handleDragStart(e)}
+                className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
+                src={baseDataUrlArr[0]}
+                ref={imgRef}
+                style={{
+                  width: signWidth,
+                  position: "fixed",
+                  left: "5%",
+                  top: "300px",
+                }}
+                onClick={() => drawSignature(imgRef, 420, 255)}
+              />
+              {/* new code : 사인 삭체 버튼 */}
+              <button 
+                className="border border-stone-200"
+                style={{
+                  width: signWidth,
+                  position: "fixed",
+                  left: "5%",
+                  top: "300px",
+                }}
+                // ref={buttonRef}
+                onClick={() => handleSignClick1(0)}
+              >x</button>
+            </div>
           )}
           {baseDataUrlArr[1] != undefined && (
             <img
@@ -385,7 +415,7 @@ const Edit: React.FC = () => {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

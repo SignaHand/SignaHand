@@ -35,6 +35,7 @@ interface ResizeContextType {
   imgRef4: React.RefObject<HTMLImageElement>;
   imgRef5: React.RefObject<HTMLImageElement>;
   imgRef6: React.RefObject<HTMLImageElement>;
+  buttonRef: React.RefObject<HTMLImageElement>;
 
   copiedImgRef: React.RefObject<HTMLImageElement>; // 복제된 서명에 대한 ref
 
@@ -122,6 +123,9 @@ export const HandContextProvider: React.FC<HandContextProviderProps> = ({
   const imgRef5 = useRef<HTMLImageElement>(null);
   const imgRef6 = useRef<HTMLImageElement>(null);
   const copiedImgRef = useRef<HTMLImageElement>(null);
+
+  const buttonRef = useRef<HTMLImageElement>(null);
+
   const [signWidth] = useState<string>("200px");
   const [signHeight] = useState<string>("200px");
 
@@ -168,6 +172,7 @@ export const HandContextProvider: React.FC<HandContextProviderProps> = ({
           imgRef4,
           imgRef5,
           imgRef6,
+          buttonRef,
           copiedImgRef,
           signWidth,
           signHeight,
