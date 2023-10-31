@@ -48,11 +48,11 @@ const SignatureModal: React.FC<SignatureModalProps> = ({
   //     };
   // });
 
-  const closeModal = () => {
+  const closeModal = async () => {
     if (modal.current) {
       modal.current.close();
-      setCanvas("non-view");
     }
+    setCanvas("non-view");
   };
 
   // 서명 캔버스 초기화

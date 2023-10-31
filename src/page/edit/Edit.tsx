@@ -272,7 +272,7 @@ const Edit: React.FC = () => {
         <div className="col-span-6" style={{ backgroundColor: "#CECECE" }}>
           <PdfDisplay file={file} />
           {/* 복제된 서명 렌더링 */}
-          {copiedSigns1.map((imgInfo) => (
+          {/* {copiedSigns1.map((imgInfo) => (
             <img
               key={imgInfo.id}
               src={baseDataUrlArr[0]}
@@ -367,7 +367,7 @@ const Edit: React.FC = () => {
                 handleSignClick6(imgInfo.id);
               }}
             />
-          ))}
+          ))} */}
         </div>
 
         <div className="col-span-2">
