@@ -127,9 +127,11 @@ const Edit: React.FC = () => {
     setMoveHand("non-view");
   };
 
+  // 드래그가 시작될 때 호출되는 함수
   function handleDragStart(e: React.DragEvent<HTMLImageElement>) {
     if (!e.target) return;
     const target = e.target as HTMLImageElement;
+    // 드래그 대상의 id를 DataTransfer 객체에 저장
     e.dataTransfer.setData("text/plain", target.id);
   }
 

@@ -100,11 +100,13 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
      * */
   }
 
-  // 이벤트 핸들러 함수 추가
+  // 드래그 오버 이벤트를 처리하는 함수
   function handleDragOver(e: React.DragEvent<HTMLDivElement>) {
+    // 드롭을 허용하도록 기본 동작을 취소
     e.preventDefault();
   }
 
+  // 주어진 이미지 소스와 좌표를 사용하여 서명을 그리는 함수
   const drawSignature = (src: string, dx: number, dy: number) => {
     // canvas 요소 가져오기
     const canvas: HTMLCanvasElement = document.getElementById(
@@ -122,43 +124,22 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
     };
   };
 
+  // 서명을 드롭할 때의 동작을 처리하는 함수
   function handleDrop(e: React.DragEvent<HTMLDivElement>) {
     e.preventDefault();
     const data = e.dataTransfer.getData("text");
     const img = document.getElementById(data) as HTMLImageElement;
-
-    console.log("check img", data, img);
 
     if (img) {
       const canvas: HTMLCanvasElement = document.getElementById(
         "pdfCanvas"
       ) as HTMLCanvasElement;
       const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left - 70;
+      const x = e.clientX - rect.left - 70; // 서명이 정확히 드롭되도록 보정한 좌표
       const y = e.clientY - rect.top - 30;
-      console.log(x, y);
       drawSignature(img.src, x, y); // 서명 그리기
     }
   }
-
-  // function drawSignature() {
-  //   // canvas 요소 가져오기
-  //   const canvas: HTMLCanvasElement = document.getElementById(
-  //     "pdfCanvas"
-  //   ) as HTMLCanvasElement;
-  //   if (!canvas) return;
-  //   const ctx = canvas.getContext("2d");
-  //   if (!ctx) return;
-
-  //   // 싸인 이미지를 생성하고 로드
-  //   const signature = new Image();
-  //   signature.src = imgRef.current?.src as string;
-  //   if (signature) {
-  //     signature.onload = function () {
-  //       ctx.drawImage(signature, 420, 260, 150, 84);
-  //     };
-  //   }
-  // }
 
   function saveImage() {
     // canvas 가져오기
