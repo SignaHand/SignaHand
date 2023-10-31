@@ -66,7 +66,7 @@ const Edit: React.FC = () => {
       signModal.current.showModal();
     }
   
-    // 클릭한 이미지의 ref를 찾아옵니다.
+    // 클릭한 이미지의 ref를 찾아오기
     let imgToRemove;
     switch (imgId) {
       case 0:
