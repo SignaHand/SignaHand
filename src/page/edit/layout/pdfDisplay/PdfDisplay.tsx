@@ -11,6 +11,7 @@ import {
   usePdfPageContext,
 } from "../../../../context/HandContext";
 import { Link } from "react-router-dom";
+import jsPDF from 'jspdf';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`;
 
@@ -49,8 +50,7 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
       const page = await pdf.getPage(currentPage);
       try {
         if (!page) return;
-        const scale = 1;
-        const viewport = page.getViewport({ scale });
+        const viewport = page.getViewport({ scale: 1 });
 
         // const canvas = canvasRef.current;
         const canvas = document.createElement("canvas");
@@ -143,27 +143,45 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
 
   function saveImage() {
     // canvas 가져오기
-    const canvas: HTMLCanvasElement = document.getElementById(
-      "pdfCanvas"
-    ) as HTMLCanvasElement;
+    // const canvas: HTMLCanvasElement = document.getElementById(
+    //   "pdfCanvas"
+    // ) as HTMLCanvasElement;
 
-    if (!canvas) return;
-    const imageDataUrl = canvas.toDataURL("image/png");
-    const image = new Image();
-    image.src = imageDataUrl;
+    const canvasArray = document.querySelectorAll('canvas');
+    if (!canvasArray) return;
+    console.log(canvasArray);
+
+    const imageUrls: string[] = [];
+    canvasArray.forEach((canvas, index) => {
+      if (index != 0) {
+        imageUrls.push(canvas.toDataURL("image/jpeg", 1.0));
+      }
+    })
+
+    const canvasWidth = canvasArray[0].width;
+    const canvasHeigth = canvasArray[0].height;
+    const pdf = new jsPDF('portrait', 'px', [canvasWidth, canvasHeigth]);
+    imageUrls.forEach((url, index) => {
+      if (index != 0) {
+        pdf.addPage();
+      }
+      pdf.addImage(url, "JPEG", 0, 0, canvasWidth, canvasHeigth, '', "SLOW");
+    })
+
+    pdf.save('canvas_image.pdf');
 
     // 이미지 띄우기
-    const imageContainer = document.getElementById("image-container");
-    if (imageContainer) {
-      imageContainer.appendChild(image);
-    }
+    // const imageContainer = document.getElementById("image-container");
+    // if (imageContainer) {
+    //   imageContainer.appendChild(image);
+    // }
 
     // 이미지 데이터 URL을 저장하거나 다른 용도로 사용할 수 있음
     // 예시: 이미지를 다운로드
-    const downloadLink = document.createElement("a");
-    downloadLink.href = imageDataUrl;
-    downloadLink.download = "canvas_image.png";
-    downloadLink.click();
+    // const downloadLink = document.createElement("a");
+    // downloadLink.href = imageDataUrl;
+    // downloadLink.download = "canvas_image.png";
+    // downloadLink.click();
   }
 
   // pdf 그림자 생성 코드   <div className="shadow-inner border border-zinc-400 relative" >
