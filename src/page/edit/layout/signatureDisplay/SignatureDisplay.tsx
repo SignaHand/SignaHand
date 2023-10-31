@@ -22,9 +22,7 @@ const SignatureDisplay: React.FC = () => {
       signModal.current.showModal();
     }
   };
-
   
-
   return (
     <>
       <div className="flex flex-col items-center justify-center h-full">

@@ -56,6 +56,46 @@ const Edit: React.FC = () => {
     }
   }
 
+  // 작성된 서명을 삭제하기 위한 코드
+  const signModal = useRef<HTMLDialogElement | null>(null);
+  const { setCanvas } = useHandContext();
+
+  const removeSign = (imgId: number) => {
+    setCanvas("view");
+    if (signModal.current) {
+      signModal.current.showModal();
+    }
+  
+    // 클릭한 이미지의 ref를 찾아옵니다.
+    let imgToRemove;
+    switch (imgId) {
+      case 0:
+        imgToRemove = imgRef.current;
+        break;
+      case 1:
+        imgToRemove = imgRef2.current;
+        break;
+      case 2:
+        imgToRemove = imgRef3.current;
+        break;
+      case 3:
+        imgToRemove = imgRef4.current;
+        break;
+      case 4:
+        imgToRemove = imgRef5.current;
+        break;
+      default:
+        imgToRemove = imgRef6.current;
+        break;
+    }
+  
+    // 이미지를 지웁니다.
+    if (imgToRemove) {
+      imgToRemove.remove();
+    }
+  };
+  
+
   return (
     <>
       <div className="grid grid-cols-10 h-full">
@@ -75,8 +115,7 @@ const Edit: React.FC = () => {
                 left: "5%",
                 top: "300px",
               }}
-              // onClick={startResize1}
-              onClick={() => drawSignature(imgRef, 420, 255)}
+              onClick={() => removeSign(0)}
             />
           )}
           {baseDataUrlArr[1] != undefined && (
@@ -93,8 +132,7 @@ const Edit: React.FC = () => {
                 left: "5%",
                 top: "500px",
               }}
-              // onClick={startResize2}
-              onClick={() => drawSignature(imgRef2, 420, 270)}
+              onClick={() => removeSign(1)}
             />
           )}
           {baseDataUrlArr[2] != undefined && (
@@ -108,8 +146,7 @@ const Edit: React.FC = () => {
                 left: "5%",
                 top: "700px",
               }}
-              // onClick={startResize3}
-              onClick={() => drawSignature(imgRef3, 420, 285)}
+              onClick={() => removeSign(2)}
             />
           )}
           {baseDataUrlArr[3] != undefined && (
@@ -123,8 +160,7 @@ const Edit: React.FC = () => {
                 left: "5%",
                 top: "900px",
               }}
-              // onClick={startResize3}
-              onClick={() => drawSignature(imgRef4, 420, 300)}
+              onClick={() => removeSign(3)}
             />
           )}
           {baseDataUrlArr[4] != undefined && (
@@ -138,8 +174,7 @@ const Edit: React.FC = () => {
                 left: "5%",
                 top: "1100px",
               }}
-              // onClick={startResize3}
-              onClick={() => drawSignature(imgRef5, 420, 315)}
+              onClick={() => removeSign(4)}
             />
           )}
           {baseDataUrlArr[5] != undefined && (
@@ -153,8 +188,7 @@ const Edit: React.FC = () => {
                 left: "5%",
                 top: "1300px",
               }}
-              // onClick={startResize3}
-              onClick={() => drawSignature(imgRef6, 420, 330)}
+              onClick={() => removeSign(5)}
             />
           )}
           <SignatureDisplay />
