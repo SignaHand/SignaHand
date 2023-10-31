@@ -54,19 +54,21 @@ const Edit: React.FC = () => {
         ctx.drawImage(signature, dx, dy, 150, 84);
       };
     }
+    return 
   }
 
   // 작성된 서명을 삭제하기 위한 코드
   const signModal = useRef<HTMLDialogElement | null>(null);
-  const { setCanvas } = useHandContext();
+  const { setCanvas, setBaseDataUrlArr } = useHandContext();
 
   const removeSign = (imgId: number) => {
     setCanvas("view");
     if (signModal.current) {
       signModal.current.showModal();
     }
+    
   
-    // 클릭한 이미지의 ref를 찾아오기
+    // 클릭한 이미지의 ref 찾아오기
     let imgToRemove;
     switch (imgId) {
       case 0:
@@ -89,7 +91,7 @@ const Edit: React.FC = () => {
         break;
     }
   
-    // 이미지를 지웁니다.
+    // 이미지 지우기
     if (imgToRemove) {
       imgToRemove.remove();
     }
