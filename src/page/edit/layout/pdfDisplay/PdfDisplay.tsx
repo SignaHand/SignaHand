@@ -37,6 +37,8 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
   } = useResizeContext(); // 서명 이동&크기 조절을 위한 Context
   const { currentPage, setCurrentPage } = usePdfPageContext(); // pdf 페이지 이동을 위한 Context
   const {pages, updatePage} = usePageContext();
+  const [isCanvasReset, setIsCanvasReset] = useState<number>(0); // canvas 리셋을 위한 state
+
   /* PDF 파일을 뷰어에 띄우기 위해서는 URL을 사용해야함 */
   const pdfUrl = URL.createObjectURL(file);
   /* PDF 문서 업로딩 */
@@ -82,7 +84,7 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
       }
     };
     loadPDF();
-  }, [currentPage]);
+  }, [currentPage, isCanvasReset]);
 
   function modifyPage() {
     try {
@@ -107,6 +109,10 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
   function onHandlePrevPage() {
     modifyPage();
     setCurrentPage(currentPage - 1);
+  }
+
+  function onHandleReset() {
+    setIsCanvasReset(isCanvasReset + 1);
   }
 
   // 드래그 오버 이벤트를 처리하는 함수
@@ -197,6 +203,13 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
               next
             </button>
           )}
+          <button
+            className="btn w-[150px] h-[70px] shadow border border-zinc-400"
+            onClick={onHandleReset}
+          >
+            reset
+          </button>
+
           {/* <button className="btn" onClick={drawSignature}>
           signature
         </button> */}
