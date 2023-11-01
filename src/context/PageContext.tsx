@@ -9,6 +9,7 @@ interface PageContextType {
   pages: Page[];
   addPage: (page: Page) => void;
   updatePage: (updatedPage: number, updatedUrl: string) => void;
+  getPageByNo: (no: number) => Page | undefined;
 }
 
 const PageContext = createContext<PageContextType | undefined>(undefined);
@@ -28,8 +29,12 @@ export function PageProvider({ children }: { children: ReactNode }) {
     );
   };
 
+  const getPageByNo = (no: number): Page | undefined => {
+    return pages.find((page) => page.page === no);
+  };
+
   return (
-      <PageContext.Provider value={{ pages, addPage, updatePage }}>
+      <PageContext.Provider value={{ pages, addPage, updatePage, getPageByNo }}>
         {children}
       </PageContext.Provider>
   );

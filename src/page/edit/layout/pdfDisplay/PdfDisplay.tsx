@@ -36,45 +36,60 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
     setSelectedSign,
   } = useResizeContext(); // 서명 이동&크기 조절을 위한 Context
   const { currentPage, setCurrentPage } = usePdfPageContext(); // pdf 페이지 이동을 위한 Context
-  const {pages, updatePage} = usePageContext();
+  const {pages, updatePage, getPageByNo} = usePageContext();
   const [isCanvasReset, setIsCanvasReset] = useState<number>(0); // canvas 리셋을 위한 state
 
-  /* PDF 파일을 뷰어에 띄우기 위해서는 URL을 사용해야함 */
-  const pdfUrl = URL.createObjectURL(file);
-  /* PDF 문서 업로딩 */
-  const loadingTask = pdfjsLib.getDocument(pdfUrl);
-
+  // setCurrentPage(1);
   useEffect(() => {
     /* PDF 불러오기 */
     const loadPDF = async () => {
-      /* PDF 문서 객체 */
-      const pdf = await loadingTask.promise;
-      setNumPages(pdf.numPages);
-      const page = await pdf.getPage(currentPage);
+      setNumPages(pages.length);
       try {
-        if (!page) return;
-        const viewport = page.getViewport({ scale: 1 });
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        const image = new Image();
 
-        const canvas = document.createElement("canvas");
-        canvas.id = "pdfCanvas";
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-
-        const context = canvas.getContext("2d");
-
-        const renderContext = {
-          canvasContext: context,
-          viewport: viewport,
-        };
-
+        image.onload = function () {
+          canvas.id = 'pdfCanvas';
+          canvas.width = image.width;
+          canvas.height = image.height;
+          if (context) {
+            context.drawImage(image, 0, 0);
+          }
+        }
         const container = containerRef.current as HTMLDivElement;
         if (container.firstChild) {
           container.removeChild(container.firstChild);
         }
         container.appendChild(canvas);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        await page.render(renderContext).promise;
+
+        const currentPageData = getPageByNo(currentPage);
+        if (currentPageData) {
+          image.src = currentPageData.url;
+
+        }
+
+
+
+
+        // if (!page) return;
+
+        //
+        // const context = canvas.getContext("2d");
+        //
+        // const renderContext = {
+        //   canvasContext: context,
+        //   viewport: viewport,
+        // };
+        //
+        // const container = containerRef.current as HTMLDivElement;
+        // if (container.firstChild) {
+        //   container.removeChild(container.firstChild);
+        // }
+        // container.appendChild(canvas);
+        // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // // @ts-ignore
+        // await page.render(renderContext).promise;
       } catch (error) {
         console.error("Error loading PDF:", error);
       } finally {
