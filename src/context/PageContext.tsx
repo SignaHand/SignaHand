@@ -1,33 +1,44 @@
-import React, {createContext, useContext, ReactNode, useState} from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-type PageData = {
-    numberData: number;
-    stringData: string;
-};
+interface Page {
+  page: number;
+  url: string;
+}
 
-const initialData: PageData = {
-    numberData: 0,
-    stringData: '',
-};
+interface PageContextType {
+  pages: Page[];
+  addPage: (page: Page) => void;
+  updatePage: (updatedPage: number, updatedUrl: string) => void;
+}
 
-const PageContext = createContext<PageData | undefined>(undefined);
+const PageContext = createContext<PageContextType | undefined>(undefined);
 
-// 컨텍스트 프로바이더 컴포넌트
-type PageContextProviderProps = {
-    children: ReactNode;
-};
+export function PageProvider({ children }: { children: ReactNode }) {
+  const [pages, setPages] = useState<Page[]>([]);
 
-export const PageContextProvider: React.FC<PageContextProviderProps> = ({ children }) => {
-    const [data, setData] = useState<PageData>(initialData);
+  const addPage = (page: Page) => {
+    setPages((prevComments) => [...prevComments, page]);
+  };
 
-    return <PageContext.Provider value={data}>{children}</PageContext.Provider>;
-};
+  const updatePage = (updatedPage: number, updatedUrl: string) => {
+    setPages((prevPages) =>
+        prevPages.map((page) =>
+            page.page === updatedPage ? { ...page, url: updatedUrl } : page
+        )
+    );
+  };
 
-// 커스텀 훅 생성
-export const useMyContext = () => {
-    const context = useContext(PageContext);
-    if (context === undefined) {
-        throw new Error('useMyContext must be used within a MyContextProvider');
-    }
-    return context;
-};
+  return (
+      <PageContext.Provider value={{ pages, addPage, updatePage }}>
+        {children}
+      </PageContext.Provider>
+  );
+}
+
+export function usePageContext() {
+  const context = useContext(PageContext);
+  if (context === undefined) {
+    throw new Error('useCommentContext must be used within a CommentProvider');
+  }
+  return context;
+}

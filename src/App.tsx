@@ -5,12 +5,12 @@ import { HandContextProvider } from "./context/HandContext";
 import Home from "./page/home/Home";
 import Edit from "./page/edit/Edit";
 import End from "./page/End";
-import {PageContextProvider} from "./context/PageContext";
+import {PageProvider} from "./context/PageContext";
 
 function App() {
   return (
     <div className="App">
-      <PageContextProvider>
+      <PageProvider>
         <HandContextProvider>
           <BrowserRouter>
             <Routes>
@@ -20,7 +20,7 @@ function App() {
             </Routes>
           </BrowserRouter>
         </HandContextProvider>
-      </PageContextProvider>
+      </PageProvider>
     </div>
   );
 }

@@ -12,6 +12,7 @@ import {
 } from "../../../../context/HandContext";
 import { Link } from "react-router-dom";
 import jsPDF from 'jspdf';
+import {usePageContext} from "../../../../context/PageContext";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`;
 
@@ -35,7 +36,7 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
     setSelectedSign,
   } = useResizeContext(); // 서명 이동&크기 조절을 위한 Context
   const { currentPage, setCurrentPage } = usePdfPageContext(); // pdf 페이지 이동을 위한 Context
-
+  const {pages, updatePage} = usePageContext();
   /* PDF 파일을 뷰어에 띄우기 위해서는 URL을 사용해야함 */
   const pdfUrl = URL.createObjectURL(file);
   /* PDF 문서 업로딩 */
@@ -52,7 +53,6 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
         if (!page) return;
         const viewport = page.getViewport({ scale: 1 });
 
-        // const canvas = canvasRef.current;
         const canvas = document.createElement("canvas");
         canvas.id = "pdfCanvas";
         canvas.width = viewport.width;
@@ -78,26 +78,32 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
       } finally {
         setTimeout(() => {
           setLoading(false);
-        }, 500);
+        }, 1000);
       }
     };
     loadPDF();
   }, [currentPage]);
 
+  function modifyPage() {
+    console.log(currentPage);
+    console.log(pages)
+    const canvas = document.getElementById('pdfCanvas') as HTMLCanvasElement;
+    const updateUrl = canvas.toDataURL('image/jpeg', 1.0);
+    updatePage(currentPage, updateUrl);
+    console.log(pages);
+  }
+
   /* 다음 페이지 보는 함수*/
   function onHandleNextPage() {
+    // console.log(pages);
+    modifyPage();
     setCurrentPage(currentPage + 1);
-    /*
-     * preview 와 추가적으로 기능 작업 필요 -> canvas 이미지화하여 주고 받기 등....
-     * */
   }
 
   /* 이전 페이지 보는 함수*/
   function onHandlePrevPage() {
+    modifyPage();
     setCurrentPage(currentPage - 1);
-    /*
-     * preview 와 추가적으로 기능 작업 필요 -> canvas 이미지화하여 주고 받기 등....
-     * */
   }
 
   // 드래그 오버 이벤트를 처리하는 함수
@@ -142,46 +148,22 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
   }
 
   function saveImage() {
-    // canvas 가져오기
-    // const canvas: HTMLCanvasElement = document.getElementById(
-    //   "pdfCanvas"
-    // ) as HTMLCanvasElement;
+    modifyPage();
+    const canvas: HTMLCanvasElement = document.getElementById(
+        "pdfCanvas"
+    ) as HTMLCanvasElement;
 
-    const canvasArray = document.querySelectorAll('canvas');
-    if (!canvasArray) return;
-    console.log(canvasArray);
-
-    const imageUrls: string[] = [];
-    canvasArray.forEach((canvas, index) => {
-      if (index != 0) {
-        imageUrls.push(canvas.toDataURL("image/jpeg", 1.0));
-      }
-    })
-
-    const canvasWidth = canvasArray[0].width;
-    const canvasHeigth = canvasArray[0].height;
+    const canvasWidth = canvas.width;
+    const canvasHeigth = canvas.height;
     const pdf = new jsPDF('portrait', 'px', [canvasWidth, canvasHeigth]);
-    imageUrls.forEach((url, index) => {
+    pages.forEach((page, index) => {
       if (index != 0) {
         pdf.addPage();
       }
-      pdf.addImage(url, "JPEG", 0, 0, canvasWidth, canvasHeigth, '', "SLOW");
+      pdf.addImage(page.url, "JPEG", 0, 0, canvasWidth, canvasHeigth, '', "SLOW");
     })
 
     pdf.save('canvas_image.pdf');
-
-    // 이미지 띄우기
-    // const imageContainer = document.getElementById("image-container");
-    // if (imageContainer) {
-    //   imageContainer.appendChild(image);
-    // }
-
-    // 이미지 데이터 URL을 저장하거나 다른 용도로 사용할 수 있음
-    // 예시: 이미지를 다운로드
-    // const downloadLink = document.createElement("a");
-    // downloadLink.href = imageDataUrl;
-    // downloadLink.download = "canvas_image.png";
-    // downloadLink.click();
   }
 
   // pdf 그림자 생성 코드   <div className="shadow-inner border border-zinc-400 relative" >
