@@ -14,7 +14,11 @@ const PdfUploader: React.FC = () => {
     setSelectedFile(file);
   };
 
-  return (
+    function handleOnClickEdit() {
+
+    }
+
+    return (
     <div className="grid justify-center place-content-center h-full">
       <label
         className="relative cursor-pointer bg-gray-500 text-white py-2 px-10 rounded-lg text-center w-64"
@@ -30,7 +34,9 @@ const PdfUploader: React.FC = () => {
       </label>
       {selectedFile && (
         <Link to="/work" state={{ file: selectedFile }} className="btn text-xl">
-          edit
+            <button onClick={handleOnClickEdit}>
+                edit
+            </button>
         </Link>
       )}
     </div>
