@@ -85,17 +85,20 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
   }, [currentPage]);
 
   function modifyPage() {
-    console.log(currentPage);
-    console.log(pages)
-    const canvas = document.getElementById('pdfCanvas') as HTMLCanvasElement;
-    const updateUrl = canvas.toDataURL('image/jpeg', 1.0);
-    updatePage(currentPage, updateUrl);
-    console.log(pages);
+    try {
+      console.log(currentPage);
+      console.log(pages)
+      const canvas = document.getElementById('pdfCanvas') as HTMLCanvasElement;
+      const updateUrl = canvas.toDataURL('image/jpeg', 1.0);
+      updatePage(currentPage, updateUrl);
+      console.log(pages);
+    } catch (e) {
+      console.error("not modified, error : " + e);
+    }
   }
 
   /* 다음 페이지 보는 함수*/
   function onHandleNextPage() {
-    // console.log(pages);
     modifyPage();
     setCurrentPage(currentPage + 1);
   }
