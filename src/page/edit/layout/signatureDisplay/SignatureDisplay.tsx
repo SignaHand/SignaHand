@@ -55,8 +55,7 @@ const SignatureDisplay: React.FC = () => {
         >
           <dialog ref={guideModal} className="modal">
             <GuideModal
-              // setModalOpen={setModalOpen}
-              id={2} // 실제 데이터로 변경하기..
+              id={2}
               title="모달 제목"
               content="모달 내용"
               writer="작성자"
@@ -67,7 +66,7 @@ const SignatureDisplay: React.FC = () => {
           <div className="w-[75px] h-[70px] left-100 top-0 absolute bg-white rounded-[10px] shadow-lg border border-stone-300"></div>
           <img
             className="w-[50px] h-[50px] left-[12px] top-[10px] absolute"
-            src="/assets/images/Checkbox.png"
+            src="/assets/images/bulb.png"
           />
         </button>
 
