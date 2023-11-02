@@ -10,11 +10,15 @@ import PdfDisplay from "./layout/pdfDisplay/PdfDisplay";
 import SignatureDisplay from "./layout/signatureDisplay/SignatureDisplay";
 import PreviewDisplay from "./layout/previewDisplay/PreviewDisplay";
 import MoveHand from "./components/MoveHand";
+import {usePageContext} from "../../context/PageContext";
 
 const Edit: React.FC = () => {
   const { baseDataUrlArr } = useHandContext(); // 서명 이미지 문자열이 저장된 배열
   const { imgRef, imgRef2, imgRef3, imgRef4, imgRef5, imgRef6, signWidth } =
     useResizeContext(); // 서명 이동&크기 조절을 위한 Context
+  const {initPages} = usePageContext();
+
+  initPages();
 
   /* Home 컴포넌트에서 사용자에게 입력받은 PDF 파일 넘겨받기*/
   const location = useLocation();

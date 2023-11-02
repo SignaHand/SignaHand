@@ -12,6 +12,7 @@ interface PageContextType {
   updatePage: (updatedPage: number, updatedUrl: string) => void;
   getPageByNo: (no: number) => Page | undefined;
   modifyPage: (movePageNo: number) => void;
+  initPages: () => void;
 }
 
 const PageContext = createContext<PageContextType | undefined>(undefined);
@@ -19,6 +20,10 @@ const PageContext = createContext<PageContextType | undefined>(undefined);
 export function PageProvider({ children }: { children: ReactNode }) {
   const [pages, setPages] = useState<Page[]>([]);
   const { currentPage, setCurrentPage } = usePdfPageContext(); // pdf 페이지 이동을 위한 Context
+
+  const initPages = () => {
+    setPages([]);
+  }
 
   const addPage = (page: Page) => {
     setPages((prevComments) => [...prevComments, page]);
@@ -48,7 +53,7 @@ export function PageProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-      <PageContext.Provider value={{ pages, addPage, updatePage, getPageByNo, modifyPage }}>
+      <PageContext.Provider value={{ pages, addPage, updatePage, getPageByNo, modifyPage, initPages }}>
         {children}
       </PageContext.Provider>
   );
