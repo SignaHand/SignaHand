@@ -99,6 +99,9 @@ const Edit: React.FC = () => {
           )}
           {baseDataUrlArr[2] != undefined && (
             <img
+              id="signatureImage3"
+              draggable
+              onDragStart={(e) => handleDragStart(e)}
               className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
               src={baseDataUrlArr[2]}
               ref={imgRef3}
@@ -114,6 +117,9 @@ const Edit: React.FC = () => {
           )}
           {baseDataUrlArr[3] != undefined && (
             <img
+              id="signatureImage4"
+              draggable
+              onDragStart={(e) => handleDragStart(e)}
               className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
               src={baseDataUrlArr[3]}
               ref={imgRef4}
@@ -129,6 +135,9 @@ const Edit: React.FC = () => {
           )}
           {baseDataUrlArr[4] != undefined && (
             <img
+              id="signatureImage5"
+              draggable
+              onDragStart={(e) => handleDragStart(e)}
               className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
               src={baseDataUrlArr[4]}
               ref={imgRef5}
@@ -144,6 +153,9 @@ const Edit: React.FC = () => {
           )}
           {baseDataUrlArr[5] != undefined && (
             <img
+              id="signatureImage6"
+              draggable
+              onDragStart={(e) => handleDragStart(e)}
               className="flex items-center justify-center w-[200px] h-[150px] bg-white shadow-lg border border-stone-300"
               src={baseDataUrlArr[5]}
               ref={imgRef6}
