@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import {usePdfPageContext} from "./HandContext";
 
 interface Page {
   page: number;
@@ -10,12 +11,14 @@ interface PageContextType {
   addPage: (page: Page) => void;
   updatePage: (updatedPage: number, updatedUrl: string) => void;
   getPageByNo: (no: number) => Page | undefined;
+  modifyPage: (movePageNo: number) => void;
 }
 
 const PageContext = createContext<PageContextType | undefined>(undefined);
 
 export function PageProvider({ children }: { children: ReactNode }) {
   const [pages, setPages] = useState<Page[]>([]);
+  const { currentPage, setCurrentPage } = usePdfPageContext(); // pdf 페이지 이동을 위한 Context
 
   const addPage = (page: Page) => {
     setPages((prevComments) => [...prevComments, page]);
@@ -33,8 +36,19 @@ export function PageProvider({ children }: { children: ReactNode }) {
     return pages.find((page) => page.page === no);
   };
 
+  function modifyPage(movedPageNo: number) {
+    try {
+      const canvas = document.getElementById('pdfCanvas') as HTMLCanvasElement;
+      const updateUrl = canvas.toDataURL('image/jpeg', 1.0);
+      updatePage(currentPage, updateUrl);
+      setCurrentPage(movedPageNo);
+    } catch (e) {
+      console.error("not modified, error : " + e);
+    }
+  }
+
   return (
-      <PageContext.Provider value={{ pages, addPage, updatePage, getPageByNo }}>
+      <PageContext.Provider value={{ pages, addPage, updatePage, getPageByNo, modifyPage }}>
         {children}
       </PageContext.Provider>
   );

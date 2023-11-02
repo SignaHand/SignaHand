@@ -24,7 +24,6 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(true);
   const [numPages, setNumPages] = useState<number>(100);
-  // const [currentPage, setCurrentPage] = useState<number>(1);
   const {
     imgRef,
     imgRef2,
@@ -39,9 +38,7 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
   const {pages, updatePage, getPageByNo} = usePageContext();
   const [isCanvasReset, setIsCanvasReset] = useState<number>(0); // canvas 리셋을 위한 state
 
-  // setCurrentPage(1);
   useEffect(() => {
-    /* PDF 불러오기 */
     const loadPDF = async () => {
       setNumPages(pages.length);
       try {
@@ -66,64 +63,29 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
         const currentPageData = getPageByNo(currentPage);
         if (currentPageData) {
           image.src = currentPageData.url;
-
         }
-
-
-
-
-        // if (!page) return;
-
-        //
-        // const context = canvas.getContext("2d");
-        //
-        // const renderContext = {
-        //   canvasContext: context,
-        //   viewport: viewport,
-        // };
-        //
-        // const container = containerRef.current as HTMLDivElement;
-        // if (container.firstChild) {
-        //   container.removeChild(container.firstChild);
-        // }
-        // container.appendChild(canvas);
-        // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // // @ts-ignore
-        // await page.render(renderContext).promise;
       } catch (error) {
         console.error("Error loading PDF:", error);
       } finally {
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000);
+        setLoading(false);
       }
     };
     loadPDF();
   }, [currentPage, isCanvasReset]);
 
-  function modifyPage() {
+
+  function modifyPage(movedPageNo: number) {
     try {
       console.log(currentPage);
       console.log(pages)
       const canvas = document.getElementById('pdfCanvas') as HTMLCanvasElement;
       const updateUrl = canvas.toDataURL('image/jpeg', 1.0);
       updatePage(currentPage, updateUrl);
+      setCurrentPage(movedPageNo);
       console.log(pages);
     } catch (e) {
       console.error("not modified, error : " + e);
     }
-  }
-
-  /* 다음 페이지 보는 함수*/
-  function onHandleNextPage() {
-    modifyPage();
-    setCurrentPage(currentPage + 1);
-  }
-
-  /* 이전 페이지 보는 함수*/
-  function onHandlePrevPage() {
-    modifyPage();
-    setCurrentPage(currentPage - 1);
   }
 
   function onHandleReset() {
@@ -172,7 +134,7 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
   }
 
   function saveImage() {
-    modifyPage();
+    modifyPage(currentPage);
     const canvas: HTMLCanvasElement = document.getElementById(
         "pdfCanvas"
     ) as HTMLCanvasElement;
@@ -205,7 +167,7 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
           {currentPage !== 1 && (
             <button
               className="btn w-[150px] h-[70px] shadow border border-zinc-400"
-              onClick={onHandlePrevPage}
+              onClick={() => modifyPage(currentPage - 1)}
             >
               prev
             </button>
@@ -213,7 +175,7 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
           {currentPage !== numPages && (
             <button
               className="btn w-[150px] h-[70px] shadow border border-zinc-400"
-              onClick={onHandleNextPage}
+              onClick={() => modifyPage(currentPage + 1)}
             >
               next
             </button>

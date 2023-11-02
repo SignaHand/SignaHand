@@ -10,17 +10,17 @@ import {PageProvider} from "./context/PageContext";
 function App() {
   return (
     <div className="App">
-      <PageProvider>
-        <HandContextProvider>
+      <HandContextProvider>
+        <PageProvider>
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/work" element={<Edit />} />
-              <Route path="/End" element={<End />} />
+              <Route path="/" element={<Home/>}/>
+              <Route path="/work" element={<Edit/>}/>
+              <Route path="/End" element={<End/>}/>
             </Routes>
           </BrowserRouter>
-        </HandContextProvider>
-      </PageProvider>
+        </PageProvider>
+      </HandContextProvider>
     </div>
   );
 }
