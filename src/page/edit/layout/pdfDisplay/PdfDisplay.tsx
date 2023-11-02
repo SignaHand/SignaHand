@@ -35,7 +35,7 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
     setSelectedSign,
   } = useResizeContext(); // 서명 이동&크기 조절을 위한 Context
   const { currentPage, setCurrentPage } = usePdfPageContext(); // pdf 페이지 이동을 위한 Context
-  const {pages, updatePage, getPageByNo} = usePageContext();
+  const {pages, updatePage, getPageByNo, resetPage} = usePageContext();
   const [isCanvasReset, setIsCanvasReset] = useState<number>(0); // canvas 리셋을 위한 state
 
   useEffect(() => {
@@ -90,6 +90,7 @@ const PdfDisplay: React.FC<PdfDisplayProps> = ({ file }) => {
 
   function onHandleReset() {
     setIsCanvasReset(isCanvasReset + 1);
+    resetPage(currentPage);
   }
 
   // 드래그 오버 이벤트를 처리하는 함수
