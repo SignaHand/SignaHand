@@ -2,10 +2,16 @@
  * export default component name: Home
  * dev: kimminsu31415
  * description: 루트 페이지 첫 화면, npm start하면 나오는 화면*/
-import React from "react";
+import React, {useEffect} from "react";
 import PdfUploader from "./components/PdfUploader";
+import {usePageContext} from "../../context/PageContext";
 
 const Home = () => {
+  const {initPages} = usePageContext();
+
+  useEffect(() => {
+    initPages();
+  }, []);
   return (
     <>
       <div className="grid grid-row-3 h-screen">

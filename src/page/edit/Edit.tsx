@@ -3,7 +3,7 @@
  * dev: kimminsu31415
  * description: Home.tsx 파일에서 'work' 버튼을 누르면 나오는 페이지
  * */
-import React, { useState, useRef } from "react";
+import React, {useState, useRef, useEffect} from "react";
 import { useHandContext, useResizeContext } from "../../context/HandContext";
 import { useLocation } from "react-router";
 import PdfDisplay from "./layout/pdfDisplay/PdfDisplay";
@@ -16,9 +16,6 @@ const Edit: React.FC = () => {
   const { baseDataUrlArr } = useHandContext(); // 서명 이미지 문자열이 저장된 배열
   const { imgRef, imgRef2, imgRef3, imgRef4, imgRef5, imgRef6, signWidth } =
     useResizeContext(); // 서명 이동&크기 조절을 위한 Context
-  const {initPages} = usePageContext();
-
-  initPages();
 
   /* Home 컴포넌트에서 사용자에게 입력받은 PDF 파일 넘겨받기*/
   const location = useLocation();
